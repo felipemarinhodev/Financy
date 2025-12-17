@@ -27,4 +27,13 @@ export class CategoryService {
       updatedAt: category.updatedAt,
     };
   }
+
+  async findAllByUserId(id: string) {
+    const categories = await prismaClient.category.findMany({
+      where: {
+        userId: id,
+      },
+    });
+    return categories;
+  }
 }
