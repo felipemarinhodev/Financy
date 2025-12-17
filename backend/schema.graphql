@@ -3,6 +3,61 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+type CategoryModel {
+  color: ColorCategory
+  createdAt: DateTimeISO!
+  description: String
+  icon: IconCategory
+  id: ID!
+  title: String!
+  updatedAt: DateTimeISO!
+  user: UserModel
+  userId: String!
+}
+
+"""Available colors for categories"""
+enum ColorCategory {
+  blue
+  green
+  orange
+  pink
+  purple
+  red
+  yellow
+}
+
+input CreateCategoryInput {
+  color: ColorCategory
+  description: String
+  icon: IconCategory
+  title: String!
+}
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.This scalar is serialized to a string in ISO 8601 format and parsed from a string in ISO 8601 format.
+"""
+scalar DateTimeISO
+
+"""Available icons for categories"""
+enum IconCategory {
+  baggage_claim
+  book_open
+  briefcase_business
+  car_front
+  dumbbell
+  gift
+  heart_pulse
+  house
+  mailbox
+  paw_print
+  piggy_bank
+  receipt_text
+  shopping_cart
+  ticket
+  tool_case
+  utensils
+}
+
 input LoginInput {
   email: String!
   password: String!
@@ -15,6 +70,7 @@ type LoginOutput {
 }
 
 type Mutation {
+  createCategory(data: CreateCategoryInput!): CategoryModel!
   login(data: LoginInput!): LoginOutput!
   register(data: RegisterInput!): RegisterOutput!
 }

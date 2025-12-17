@@ -18,4 +18,50 @@ model User {
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  categories Category[]
+}
+
+enum ColorCategory {
+  green
+  blue
+  purple
+  pink
+  red
+  orange
+  yellow
+}
+
+enum IconCategory {
+  briefcase_business
+  car_front
+  heart_pulse
+  piggy_bank
+  shopping_cart
+  ticket
+  tool_case
+  utensils
+  paw_print
+  house
+  gift
+  dumbbell
+  book_open
+  baggage_claim
+  mailbox
+  receipt_text
+}
+
+model Category {
+  id          String        @id @default(cuid())
+  title       String
+  description String?
+  color       ColorCategory @default(blue)
+  icon        IconCategory  @default(briefcase_business)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([title, userId])
 }
