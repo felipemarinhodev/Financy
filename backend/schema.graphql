@@ -3,7 +3,19 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type LoginOutput {
+  refreshToken: String!
+  token: String!
+  user: UserModel!
+}
+
 type Mutation {
+  login(data: LoginInput!): LoginOutput!
   register(data: RegisterInput!): RegisterOutput!
 }
 
