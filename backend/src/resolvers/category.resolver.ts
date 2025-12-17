@@ -1,4 +1,12 @@
-import { Arg, FieldResolver, Mutation, Resolver, Root, UseMiddleware } from "type-graphql";
+import {
+  Arg,
+  FieldResolver,
+  Mutation,
+  Query,
+  Resolver,
+  Root,
+  UseMiddleware,
+} from "type-graphql";
 import { CreateCategoryInput, UpdateCategoryInput } from "../dtos/input";
 import { User } from "../generated/prisma/client";
 import { GqlUser } from "../graphql/decorators/user.decorator";
@@ -22,15 +30,20 @@ export class CategoryResolver {
     return this.categoryService.create(data, user.id);
   }
 
-  @Mutation(() => CategoryModel)
-  async updateCategory(
-    @Arg("data", () => UpdateCategoryInput)
-    data: UpdateCategoryInput,
-    @Arg("id", () => String) id: string,
-    @GqlUser()
-    user: User
-  ) {
-    return this.categoryService.update();
+  // @Mutation(() => CategoryModel)
+  // async updateCategory(
+  //   @Arg("data", () => UpdateCategoryInput)
+  //   data: UpdateCategoryInput,
+  //   @Arg("id", () => String) id: string,
+  //   @GqlUser()
+  //   user: User
+  // ) {
+  //   return this.categoryService.update();
+  // }
+
+  @Query(() => [CategoryModel])
+  async categories(@GqlUser() user: User) {
+    return this.categoryService.findAllByUserId(user.id);
   }
 
   @FieldResolver(() => UserModel)
