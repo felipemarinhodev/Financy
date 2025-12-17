@@ -5,13 +5,14 @@ import "reflect-metadata";
 import "dotenv/config";
 import express from "express";
 import { buildSchema } from "type-graphql";
-import { LoginResolver, RegisterResolver } from "./resolvers";
+import { CategoryResolver, LoginResolver, RegisterResolver } from "./resolvers";
+import { buildContext } from "./graphql/context";
 
 async function startServer() {
   const app = express();
 
   const schema = await buildSchema({
-    resolvers: [RegisterResolver, LoginResolver],
+    resolvers: [RegisterResolver, LoginResolver, CategoryResolver],
     validate: false,
     emitSchemaFile: "./schema.graphql",
   });
@@ -23,7 +24,11 @@ async function startServer() {
   app.use(cors());
   app.use(express.json());
 
-  app.use("/graphql", express.json(), expressMiddleware(server));
+  app.use(
+    "/graphql",
+    express.json(),
+    expressMiddleware(server, { context: buildContext })
+  );
 
   app.listen(4000, () => {
     console.log(`Server is running at http://localhost:4000/graphql`);
