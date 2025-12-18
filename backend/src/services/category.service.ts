@@ -1,5 +1,5 @@
 import { prismaClient } from "@/prisma/prisma";
-import { CreateCategoryInput } from "../dtos/input";
+import { CreateCategoryInput, UpdateCategoryInput } from "../dtos/input";
 
 export class CategoryService {
   async create(
@@ -35,5 +35,33 @@ export class CategoryService {
       },
     });
     return categories;
+  }
+
+  async update(data: UpdateCategoryInput, id: string, userId: string) {
+    const categoryExist = await prismaClient.category.findUnique({
+      where: {
+        id,
+        userId,
+      },
+    });
+
+    if (!categoryExist) {
+      throw new Error("Category not found");
+    }
+
+    const category = await prismaClient.category.update({
+      where: {
+        id,
+        userId,
+      },
+      data: {
+        title: data.title ?? categoryExist.title,
+        description: data.description ?? categoryExist.description,
+        color: data.color ?? categoryExist.color,
+        icon: data.icon ?? categoryExist.icon,
+      },
+    });
+
+    return category;
   }
 }
