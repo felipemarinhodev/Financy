@@ -89,6 +89,7 @@ type Mutation {
 type Query {
   categories: [CategoryModel!]!
   health: String!
+  transactions: [TransactionModel!]!
 }
 
 input RegisterInput {
