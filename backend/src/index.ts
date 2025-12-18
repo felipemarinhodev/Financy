@@ -5,14 +5,24 @@ import "reflect-metadata";
 import "dotenv/config";
 import express from "express";
 import { buildSchema } from "type-graphql";
-import { CategoryResolver, LoginResolver, RegisterResolver } from "./resolvers";
+import {
+  CategoryResolver,
+  LoginResolver,
+  RegisterResolver,
+  TransactionResolver,
+} from "./resolvers";
 import { buildContext } from "./graphql/context";
 
 async function startServer() {
   const app = express();
 
   const schema = await buildSchema({
-    resolvers: [RegisterResolver, LoginResolver, CategoryResolver],
+    resolvers: [
+      CategoryResolver,
+      LoginResolver,
+      RegisterResolver,
+      TransactionResolver,
+    ],
     validate: false,
     emitSchemaFile: "./schema.graphql",
   });
