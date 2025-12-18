@@ -12,7 +12,7 @@ import { CategoryModel, TransactionModel, UserModel } from "../models";
 import { CategoryService, TransactionService, UserService } from "../services";
 import { CreateTransactionInput, UpdateTransactionInput } from "../dtos/input";
 import { User } from "../generated/prisma/client";
-import { GqlUser } from "../graphql/decorators/user.decorator";
+import { GqlUser } from "../graphql/decorators";
 
 @Resolver(() => TransactionModel)
 @UseMiddleware(isAuth)

@@ -9,7 +9,7 @@ import {
 } from "type-graphql";
 import { CreateCategoryInput, UpdateCategoryInput } from "../dtos/input";
 import { User } from "../generated/prisma/client";
-import { GqlUser } from "../graphql/decorators/user.decorator";
+import { GqlUser } from "../graphql/decorators";
 import { isAuth } from "../middlewares/auth.middleware";
 import { CategoryModel, UserModel } from "../models";
 import { CategoryService, UserService } from "../services";
