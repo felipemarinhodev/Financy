@@ -19,6 +19,24 @@ export class TransactionService {
     return transaction;
   }
 
+  async delete(id: string, userId: string) {
+    const args = {
+      where: {
+        id,
+        userId,
+      },
+    };
+    const transactionExist = await prismaClient.transaction.findUnique(args);
+
+    if (!transactionExist) {
+      throw new Error("Transaction not found");
+    }
+
+    await prismaClient.transaction.delete(args);
+
+    return true;
+  }
+
   findAllByUserId(userId: string) {
     const transactions = prismaClient.transaction.findMany({
       where: {
