@@ -1,0 +1,112 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-dark: #124B2B;
+  --color-brand-base: #1F6F43;
+
+  --color-gray-100: #F8F9FA;
+  --color-gray-200: #E5E7EB;
+  --color-gray-300: #D1D5DB;
+  --color-gray-400: #9CA3AF;
+  --color-gray-500: #6B7280;
+  --color-gray-600: #4B5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #111827;
+
+  --color-black: #000000;
+  --color-white: #FFFFFF;
+  --color-danger: #EF4444;
+  --color-success: #19AD70;
+
+  --color-blue-dark: #1D4ED8;
+  --color-blue-base: #2563EB;
+  --color-blue-light: #DBEAFE;
+  
+  --color-purple-dark: #7E22CE;
+  --color-purple-base: #9333EA;
+  --color-purple-light: #F3E8FF;
+  
+  --color-pink-dark: #BE185D;
+  --color-pink-base: #DB2777;
+  --color-pink-light: #FCE7F3;
+  
+  --color-red-dark: #B91C1C;
+  --color-red-base: #DC2626;
+  --color-red-light: #FEE2E2;
+  
+  --color-orange-dark: #C2410C;
+  --color-orange-base: #EA580C;
+  --color-orange-light: #FFEDD5;
+  
+  --color-yellow-dark: #A16207;
+  --color-yellow-base: #CA8A04;
+  --color-yellow-light: #F7F3CA;
+  
+  --color-green-dark: #15803D;
+  --color-green-base: #16A34A;
+  --color-green-light: #E0FAE9;
+
+  --default-font-family: 'Inter', sans-serif;
+
+  --font-size-xl: 1.5rem;
+  --font-size-lg: 1.125rem;
+  --font-size-md: 0.875rem;
+  --font-size-sm: 0.75rem;
+  --font-size-xs: 0.625rem;
+
+  --font-weight-normal: 400;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+}
+
+@layer utilities {
+  .text-xl {
+    font-size: var(--font-size-xl);
+    line-height: 2rem;
+    font-weight: var(--font-weight-bold);
+  }
+  .text-lg {
+    font-size: var(--font-size-lg);
+    line-height: 1.5rem;
+    font-weight: var(--font-weight-bold);
+  }
+  .text-md {
+    font-size: var(--font-size-md);
+    line-height: 1.125rem;
+    font-weight: var(--font-weight-semibold);
+  }
+  .text-sm {
+    font-size: var(--font-size-sm);
+    line-height: 1rem;
+    font-weight: var(--font-weight-normal);
+  }
+  .text-xs {
+    font-size: var(--font-size-xs);
+    line-height: 0.875rem;
+    font-weight: var(--font-weight-normal);
+    text-transform: uppercase;
+  }
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    font-family: var(--default-font-family);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    background-color: var(--color-gray-100);
+  }
+}
+
+@layer utilities {
+  .animate-loading-bar {
+    animation: loadingBar 1.5s ease-in-out infinite;
+  }
+}
