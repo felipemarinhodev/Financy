@@ -2,6 +2,7 @@ import {
   Arg,
   FieldResolver,
   Mutation,
+  Query,
   Resolver,
   Root,
   UseMiddleware,
@@ -26,6 +27,11 @@ export class TransactionResolver {
     @GqlUser() user: User
   ) {
     return this.transactionService.create(data, user.id);
+  }
+
+  @Query(() => [TransactionModel])
+  async transactions(@GqlUser() user: User) {
+    return this.transactionService.findAllByUserId(user.id);
   }
 
   @FieldResolver(() => UserModel)
