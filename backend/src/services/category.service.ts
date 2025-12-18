@@ -28,6 +28,28 @@ export class CategoryService {
     };
   }
 
+  async delete(id: string, userId: string) {
+    const categoryExist = await prismaClient.category.findUnique({
+      where: {
+        id,
+        userId,
+      },
+    });
+
+    if (!categoryExist) {
+      throw new Error("Category not found");
+    }
+
+    await prismaClient.category.delete({
+      where: {
+        id,
+        userId,
+      },
+    });
+
+    return true;
+  }
+
   async findAllByUserId(id: string) {
     const categories = await prismaClient.category.findMany({
       where: {
