@@ -30,16 +30,16 @@ export class CategoryResolver {
     return this.categoryService.create(data, user.id);
   }
 
-  // @Mutation(() => CategoryModel)
-  // async updateCategory(
-  //   @Arg("data", () => UpdateCategoryInput)
-  //   data: UpdateCategoryInput,
-  //   @Arg("id", () => String) id: string,
-  //   @GqlUser()
-  //   user: User
-  // ) {
-  //   return this.categoryService.update();
-  // }
+  @Mutation(() => CategoryModel)
+  async updateCategory(
+    @Arg("data", () => UpdateCategoryInput)
+    data: UpdateCategoryInput,
+    @Arg("id", () => String) id: string,
+    @GqlUser()
+    user: User
+  ) {
+    return this.categoryService.update(data, id, user.id);
+  }
 
   @Query(() => [CategoryModel])
   async categories(@GqlUser() user: User) {
