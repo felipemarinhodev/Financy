@@ -73,6 +73,7 @@ type Mutation {
   createCategory(data: CreateCategoryInput!): CategoryModel!
   login(data: LoginInput!): LoginOutput!
   register(data: RegisterInput!): RegisterOutput!
+  updateCategory(data: UpdateCategoryInput!, id: String!): CategoryModel!
 }
 
 type Query {
@@ -90,6 +91,13 @@ type RegisterOutput {
   refreshToken: String!
   token: String!
   user: UserModel!
+}
+
+input UpdateCategoryInput {
+  color: ColorCategory
+  description: String
+  icon: IconCategory
+  title: String!
 }
 
 type UserModel {
