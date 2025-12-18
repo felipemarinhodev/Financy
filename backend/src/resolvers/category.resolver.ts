@@ -41,6 +41,15 @@ export class CategoryResolver {
     return this.categoryService.update(data, id, user.id);
   }
 
+  @Mutation(() => Boolean)
+  async deleteCategory(
+    @Arg("id", () => String) id: string,
+    @GqlUser()
+    user: User
+  ) {
+    return this.categoryService.delete(id, user.id);
+  }
+
   @Query(() => [CategoryModel])
   async categories(@GqlUser() user: User) {
     return this.categoryService.findAllByUserId(user.id);
