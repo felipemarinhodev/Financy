@@ -1,73 +1,60 @@
-# React + TypeScript + Vite
+# Financy
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Funcionalidades e Regras
 
-Currently, two official plugins are available:
+Assim como na API, temos as seguintes funcionalidades e regras:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [ ]  O usuário pode criar uma conta e fazer login
+- [ ]  O usuário pode ver e gerenciar apenas as transações e categorias criadas por ele
+- [ ]  Deve ser possível criar uma transação
+- [ ]  Deve ser possível deletar uma transação
+- [ ]  Deve ser possível editar uma transação
+- [ ]  Deve ser possível listar todas as transações
+- [ ]  Deve ser possível criar uma categoria
+- [ ]  Deve ser possível deletar uma categoria
+- [ ]  Deve ser possível editar uma categoria
+- [ ]  Deve ser possível listar todas as categorias
 
-## React Compiler
+Além disso, também temos algumas regras importantes específicas para o front-end:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- [ ]  É obrigatória a criação de uma aplicação React usando GraphQL para consultas na API e Vite como `bundler`;
+- [ ]  Siga o mais fielmente possível o layout do Figma;
 
-## Expanding the ESLint configuration
+## Páginas
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Essa aplicação possui 6 páginas e dois modais com os formulários (Dialog):
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- A página raiz (`/`) que exibe:
+    - Tela de login caso o usuário esteja deslogado
+    - Tela dashboard caso usuário esteja logado
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Ferramentas
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+É obrigatório o uso de:
+
+- Typescript
+- React
+- Vite sem framework
+- [GraphQL](https://graphql.org/)
+
+É flexível o uso de:
+
+- [TailwindCSS](https://tailwindcss.com/)
+- [Shadcn](https://ui.shadcn.com/docs)
+- [React Query](https://tanstack.com/query/v5/docs/framework/react/overview)
+- [React Hook Form](https://react-hook-form.com/)
+- [Zod](https://zod.dev/)
+
+## Variáveis ambiente
+
+Todo projeto tem diversas configurações de variáveis que devem ser diferentes de acordo com o ambiente que ele é executado. Para isso, importante sabermos, de forma fácil e intuitiva, quais variáveis são essas. Então é obrigatório que esse projeto tenha um arquivo `.env.example` com as chaves necessárias:
+
+```
+VITE_BACKEND_URL=
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Dicas
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- Comece o projeto pela aba `Style Guide` no [Figma](https://www.figma.com/design/E790OZDhJfue0D7v7jwOIf/Financy--Community-?node-id=1085-814&t=20QRTE6Mf19vfHJQ-0). Dessa forma, você prepara todo o seu tema, fontes e componentes e quando for criar as páginas vai ser bem mais tranquilo;
+- Assim com a experiência do usuário é importante (UX), a sua experiência no desenvolvimento (DX) também é muito importante. Por isso, apesar de ser possível criar essa aplicação sem nenhuma biblioteca, recomendamos utilizar algumas bibliotecas que vão facilitar tanto o desenvolvimento inicial quanto a manutenção do código;
+- Em caso de dúvidas, utilize o espaço da comunidade e do nosso fórum para interagir com outros alunos/instrutores e encontrar uma solução que funcione para você.
