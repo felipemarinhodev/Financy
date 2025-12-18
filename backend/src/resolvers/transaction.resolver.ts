@@ -10,7 +10,7 @@ import {
 import { isAuth } from "../middlewares/auth.middleware";
 import { CategoryModel, TransactionModel, UserModel } from "../models";
 import { CategoryService, TransactionService, UserService } from "../services";
-import { CreateTransactionInput } from "../dtos/input";
+import { CreateTransactionInput, UpdateTransactionInput } from "../dtos/input";
 import { User } from "../generated/prisma/client";
 import { GqlUser } from "../graphql/decorators/user.decorator";
 
@@ -27,6 +27,18 @@ export class TransactionResolver {
     @GqlUser() user: User
   ) {
     return this.transactionService.create(data, user.id);
+  }
+
+  @Mutation(() => TransactionModel)
+  async updateTransaction(
+    @Arg("data", () => UpdateTransactionInput)
+    data: UpdateTransactionInput,
+    @Arg("id", () => String)
+    id: string,
+    @GqlUser()
+    user: User
+  ) {
+    return this.transactionService.update(data, id, user.id);
   }
 
   @Query(() => [TransactionModel])
