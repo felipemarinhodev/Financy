@@ -10,7 +10,7 @@ import {
 import { CreateCategoryInput, UpdateCategoryInput } from "../dtos/input";
 import { User } from "../generated/prisma/client";
 import { GqlUser } from "../graphql/decorators";
-import { isAuth } from "../middlewares/auth.middleware";
+import { isAuth } from "../middlewares";
 import { CategoryModel, UserModel } from "../models";
 import { CategoryService, UserService } from "../services";
 

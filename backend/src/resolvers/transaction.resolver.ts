@@ -7,7 +7,7 @@ import {
   Root,
   UseMiddleware,
 } from "type-graphql";
-import { isAuth } from "../middlewares/auth.middleware";
+import { isAuth } from "../middlewares";
 import { CategoryModel, TransactionModel, UserModel } from "../models";
 import { CategoryService, TransactionService, UserService } from "../services";
 import { CreateTransactionInput, UpdateTransactionInput } from "../dtos/input";
