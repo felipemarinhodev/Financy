@@ -41,6 +41,14 @@ export class TransactionResolver {
     return this.transactionService.update(data, id, user.id);
   }
 
+  @Mutation(() => Boolean)
+  async deleteTransaction(
+    @Arg("id", () => String) id: string,
+    @GqlUser() user: User
+  ) {
+    return this.transactionService.delete(id, user.id);
+  }
+
   @Query(() => [TransactionModel])
   async transactions(@GqlUser() user: User) {
     return this.transactionService.findAllByUserId(user.id);
