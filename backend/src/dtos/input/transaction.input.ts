@@ -14,3 +14,17 @@ export class CreateTransactionInput {
   @Field(() => Date)
   date!: Date
 }
+
+@InputType()
+export class UpdateTransactionInput {
+  @Field(() => String, { nullable: true })
+  description?: string;
+  @Field(() => TransactionType, { nullable: true })
+  type?: TransactionType;
+  @Field(() => Number, { nullable: true })
+  amount?: number;
+  @Field(() => String, { nullable: true })
+  categoryId?: string;
+  @Field(() => Date, { nullable: true })
+  date?: Date;
+}
