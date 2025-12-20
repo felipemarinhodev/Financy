@@ -10,7 +10,6 @@ export const useAuthController = () => {
 
   const handleLogin = useCallback(
     async (email: string, password: string) => {
-      navigate("/dashboard");
       try {
         setIsLoading(true);
         const isAuthenticated = await login({ email, password });

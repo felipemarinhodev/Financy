@@ -26,11 +26,13 @@ export const Header = () => {
           Categorias
         </LinkHeader>
       </div>
-      <Avatar>
-        <AvatarFallback className="bg-gray-300 text-gray-800">
-          {user?.name.charAt(0)}
-        </AvatarFallback>
-      </Avatar>
+      <Link to="/profile">
+        <Avatar>
+          <AvatarFallback className="bg-gray-300 text-gray-800">
+            {user?.name.charAt(0)}
+          </AvatarFallback>
+        </Avatar>
+      </Link>
     </header>
   );
 };
