@@ -22,7 +22,7 @@ export const Profile = () => {
         </span>
       </div>
       <hr className="text-gray-200 w-full my-2" />
-      <TextField label="Nome completo" value={user?.name} className="mb-4" />
+      <TextField label="Nome completo" value={user?.name} />
       <TextField label="Email" value={user?.email} disabled />{" "}
       {/* TODO: tem que adicionar uma mensagem de error no componente TextField */}
       <div className="w-full mt-4 flex flex-col gap-4">
