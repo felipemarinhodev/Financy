@@ -10,8 +10,11 @@ import {
 import { CategoryTag } from "./components/CategoryTag";
 import { Highlight } from "./components/Highlight";
 import { TransactionItem } from "./components/TransactionItem";
+import { NewTransaction } from "@/components/NewTransaction";
+import { useState } from "react";
 
 export const Dashboard = () => {
+  const [openDialog, setOpenDialog] = useState(false);
   return (
     <div className="grid lg:grid-cols-3 gap-6">
       <Highlight
@@ -66,7 +69,10 @@ export const Dashboard = () => {
           date="30/11/2025"
         />
         <div className="flex align-center justify-center w-full">
-          <Button variant="link" className="text-green-base text-sm">
+          <Button
+            variant="link"
+            className="text-green-base text-sm"
+            onClick={() => setOpenDialog(true)}>
             <Plus className="inline-block w-5 h-5 font-medium text-green-base cursor-default" />
             Nova transação
           </Button>
@@ -115,6 +121,7 @@ export const Dashboard = () => {
           color="yellow"
         />
       </Card>
+      <NewTransaction open={openDialog} onOpenChange={setOpenDialog} />
     </div>
   );
 };
