@@ -1,7 +1,7 @@
 import { Arg, Mutation, Query, Resolver } from "type-graphql";
+import { RegisterInput } from "../dtos/input";
+import { RegisterOutput } from "../dtos/output";
 import { RegisterService } from "../services/register.service";
-import { RegisterOutput } from "../dtos/output/register.output";
-import { RegisterInput } from "../dtos/input/register.input";
 
 @Resolver()
 export class RegisterResolver {

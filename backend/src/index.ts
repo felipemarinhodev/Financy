@@ -10,6 +10,7 @@ import {
   LoginResolver,
   RegisterResolver,
   TransactionResolver,
+  UserResolver,
 } from "./resolvers";
 import { buildContext } from "./graphql/context";
 
@@ -22,6 +23,7 @@ async function startServer() {
       LoginResolver,
       RegisterResolver,
       TransactionResolver,
+      UserResolver,
     ],
     validate: false,
     emitSchemaFile: "./schema.graphql",

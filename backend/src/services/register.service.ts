@@ -6,7 +6,11 @@ import { hashPassword } from "../utils/hash";
 import { signJwt } from "../utils/jwt";
 
 export class RegisterService {
-  async register({ email, password, name }: RegisterInput): Promise<RegisterOutput> {
+  async register({
+    email,
+    password,
+    name,
+  }: RegisterInput): Promise<RegisterOutput> {
     const existingUser = await prismaClient.user.findUnique({
       where: { email },
     });
@@ -31,6 +35,6 @@ export class RegisterService {
     const token = signJwt(payload, "1d");
     const refreshToken = signJwt(payload, "7d");
 
-    return { token, refreshToken, user: payload }
+    return { token, refreshToken, user: payload };
   }
 }
