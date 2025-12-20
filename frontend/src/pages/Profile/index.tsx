@@ -4,9 +4,11 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
 import { useProfileController } from "./useProfileController";
+import { useState } from "react";
 
 export const Profile = () => {
-  const { user, handleLogout } = useProfileController();
+  const { user, handleLogout, handleUpdateProfile } = useProfileController();
+  const [name, setName] = useState(user?.name || "");
 
   return (
     <Card className="flex flex-col gap-6 justify-center items-center max-w-110 mx-auto w-full">
@@ -22,11 +24,18 @@ export const Profile = () => {
         </span>
       </div>
       <hr className="text-gray-200 w-full my-2" />
-      <TextField label="Nome completo" value={user?.name} />
+      <TextField
+        label="Nome completo"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
       <TextField label="Email" value={user?.email} disabled />{" "}
       {/* TODO: tem que adicionar uma mensagem de error no componente TextField */}
       <div className="w-full mt-4 flex flex-col gap-4">
-        <Button size="lg" className="w-full">
+        <Button
+          size="lg"
+          className="w-full"
+          onClick={() => handleUpdateProfile(name)}>
           Salvar alterações
         </Button>
         <Button
