@@ -1,5 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 import { Home } from "./pages/Home";
+import { LayoutAuth } from "./Layout/LayoutAuth";
+import { Dashboard } from "./pages/Dashboard";
 
 const router = createBrowserRouter([
   {
@@ -7,10 +9,20 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        Component: Home
-      }
-    ]
-  }
+        Component: Home,
+      },
+    ],
+  },
+  {
+    path: "/dashboard",
+    Component: LayoutAuth,
+    children: [
+      {
+        index: true,
+        Component: Dashboard,
+      },
+    ],
+  },
 ]);
 
 export function Router() {
