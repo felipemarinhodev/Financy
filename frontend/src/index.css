@@ -93,24 +93,36 @@
     font-weight: var(--font-weight-normal);
     text-transform: uppercase;
   }
-.text-label {
-  font-size: var(--font-size-md);
-  line-height: 1rem;
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-gray-700)
-}
 
-.text-input {
-  font-size: 1rem;
-  line-height: 1rem;
-  color: var(--color-gray-800)
-}
+    .text-label {
+      font-size: var(--font-size-md);
+      line-height: 1rem;
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-gray-700)
+    }
 
-.text-input:placeholder-shown {
-  font-size: 1rem;
-  line-height: 1rem;
-  color: var(--color-gray-400)
-}
+    .text-input {
+      font-size: 1rem;
+      line-height: 1rem;
+      color: var(--color-gray-800)
+    }
+
+    .text-input:placeholder-shown {
+      font-size: 1rem;
+      line-height: 1rem;
+      color: var(--color-gray-400)
+    }
+    .text-button-md {
+      font-size: 1rem;
+      line-height: 1rem;
+      font-weight: var(--font-weight-semibold);
+    }
+  
+    .text-button-sm {
+      font-size: var(--font-size-md);
+      line-height: 1rem;
+      font-weight: var(--font-weight-semibold);
+    }
 }
 
 @layer base {
