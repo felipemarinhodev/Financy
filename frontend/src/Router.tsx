@@ -3,14 +3,27 @@ import { Home } from "./pages/Home";
 import { LayoutAuth } from "./Layout/LayoutAuth";
 import { Dashboard } from "./pages/Dashboard";
 import { Profile } from "./pages/Profile";
+import { Signup } from "./pages/Auth/Signup";
+import { LayoutDefault } from "./Layout/LayoutDefault";
 
 const router = createBrowserRouter([
   {
     path: "/",
+    Component: LayoutDefault,
     children: [
       {
         index: true,
         Component: Home,
+      },
+    ],
+  },
+  {
+    path: "/signup",
+    Component: LayoutDefault,
+    children: [
+      {
+        index: true,
+        Component: Signup,
       },
     ],
   },
