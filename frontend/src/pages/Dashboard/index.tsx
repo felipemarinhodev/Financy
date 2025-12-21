@@ -39,7 +39,7 @@ export const Dashboard = () => {
           </span>
           <Button
             variant="link"
-            className="text-green-base text-sm px-0 has-[>svg]:px-0">
+            className="text-green-base text-md font-medium px-0 has-[>svg]:px-0">
             Ver todas{" "}
             <ChevronRight className="inline-block w-5 h-5 text-green-base" />
           </Button>
@@ -71,7 +71,7 @@ export const Dashboard = () => {
         <div className="flex align-center justify-center w-full">
           <Button
             variant="link"
-            className="text-green-base text-sm"
+            className="text-green-base text-md"
             onClick={() => setOpenDialog(true)}>
             <Plus className="inline-block w-5 h-5 font-medium text-green-base cursor-default" />
             Nova transação
@@ -84,7 +84,7 @@ export const Dashboard = () => {
           <span className="text-sm font-normal uppercase">Categorias</span>
           <Button
             variant="link"
-            className="text-green-base text-sm px-0 has-[>svg]:px-0">
+            className="text-green-base text-md font-medium px-0 has-[>svg]:px-0">
             Gerenciar{" "}
             <ChevronRight className="inline-block w-5 h-5 text-green-base" />
           </Button>

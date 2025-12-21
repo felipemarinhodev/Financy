@@ -87,7 +87,6 @@
   .text-xs {
     font-size: var(--font-size-xs);
     line-height: 0.875rem;
-    text-transform: uppercase;
   }
 
     .text-label {

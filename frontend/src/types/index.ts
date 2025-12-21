@@ -22,19 +22,21 @@ export type ColorOptions =
   | "yellow";
 
 export type IconCategory =
+  | "baggage_claim"
+  | "book_open"
   | "briefcase_business"
   | "car_front"
+  | "dumbbell"
+  | "gift"
   | "heart_pulse"
+  | "house"
+  | "lock"
+  | "mailbox"
+  | "paw_print"
   | "piggy_bank"
+  | "receipt_text"
   | "shopping_cart"
   | "ticket"
   | "tool_case"
-  | "utensils"
-  | "paw_print"
-  | "house"
-  | "gift"
-  | "dumbbell"
-  | "book_open"
-  | "baggage_claim"
-  | "mailbox"
-  | "receipt_text";
+  | "user"
+  | "utensils";

@@ -27,10 +27,17 @@ export const Profile = () => {
       <TextField
         label="Nome completo"
         value={name}
+        icon="user"
         onChange={(e) => setName(e.target.value)}
+        hasError={true}
       />
-      <TextField label="Email" value={user?.email} disabled />{" "}
-      {/* TODO: tem que adicionar uma mensagem de error no componente TextField */}
+      <TextField
+        label="Email"
+        value={user?.email}
+        disabled
+        icon="mailbox"
+        helperMessage="O e-mail não pode ser alterado"
+      />
       <div className="w-full mt-4 flex flex-col gap-4">
         <Button
           size="lg"
