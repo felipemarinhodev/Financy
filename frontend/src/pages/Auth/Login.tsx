@@ -1,7 +1,10 @@
 import { TextField } from "@/components/TextField";
 import { Button } from "@/components/ui/button";
+import { UserRoundPlus } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router";
 import { useAuthController } from "./useAuthController";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export function Login() {
   const { handleLogin, isLoading } = useAuthController();
@@ -34,16 +37,32 @@ export function Login() {
           disabled={isLoading}
         />
         <Button
-          className="w-full mt-4 "
+          className="w-full mt-4"
           onClick={() => handleLogin(email, password)}
           disabled={isLoading}
           size="lg">
           Entrar
         </Button>
-        <div className="flex justify-between">
-          <div>Lembrar-me</div>
-          <a className="text-green-base">Recuperar senha</a>
+        <div className="flex flex-row justify-between w-full">
+          <div className="flex items-center">
+            <Checkbox className="mr-2" />
+            <span className="text-gray-700 text-md">Lembrar-me</span>
+          </div>
+          <Link className="text-green-base text-md font-medium" to="/">
+            Recuperar senha
+          </Link>
         </div>
+        <div className="flex flex-row items-center w-full">
+          <hr className="border-gray-300 w-full" />
+          <span className="text-md text-gray-600 mx-2">ou</span>
+          <hr className="border-gray-300 w-full" />
+        </div>
+        <span className="text-md text-gray-600">Ainda não tem uma conta?</span>
+        <Link to="/signup" className="w-full">
+          <Button variant="outline" className="w-full" size="lg">
+            <UserRoundPlus className="w-4 h-4 mr-2" /> Criar conta
+          </Button>
+        </Link>
       </div>
     </main>
   );
