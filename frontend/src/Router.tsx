@@ -5,6 +5,7 @@ import { Dashboard } from "./pages/Dashboard";
 import { Profile } from "./pages/Profile";
 import { Signup } from "./pages/Auth/Signup";
 import { LayoutDefault } from "./Layout/LayoutDefault";
+import { Category } from "./pages/Category";
 
 const router = createBrowserRouter([
   {
@@ -44,6 +45,16 @@ const router = createBrowserRouter([
       {
         index: true,
         Component: Profile,
+      },
+    ],
+  },
+  {
+    path: "/categories",
+    Component: LayoutAuth,
+    children: [
+      {
+        index: true,
+        Component: Category,
       },
     ],
   },

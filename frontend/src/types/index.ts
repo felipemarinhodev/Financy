@@ -40,3 +40,11 @@ export type IconCategory =
   | "tool_case"
   | "user"
   | "utensils";
+
+  export type Category = {
+    id: string;
+    title: string;
+    description: string;
+    color: ColorOptions;
+    icon: IconCategory;
+  };

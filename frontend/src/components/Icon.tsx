@@ -35,12 +35,19 @@ export const Icon = ({
   size = 32,
   className = "",
 }: IconProps) => {
-  const classNames = cn(
-    `rounded-md p-2 ${
-      color !== "none" ? `bg-${color}-light text-${color}-base` : ""
-    }`,
-    className
-  );
+  const colorClasses: Record<ColorOptions | "none" | "gray", string> = {
+    none: "",
+    red: "bg-red-light text-red-base",
+    blue: "bg-blue-light text-blue-base",
+    green: "bg-green-light text-green-base",
+    yellow: "bg-yellow-light text-yellow-base",
+    purple: "bg-purple-light text-purple-base",
+    orange: "bg-orange-light text-orange-base",
+    pink: "bg-pink-light text-pink-base",
+    gray: "bg-gray-300 text-gray-700",
+  };
+
+  const classNames = cn("rounded-md p-2", colorClasses[color], className);
 
   const IconComponent = useMemo(() => {
     switch (icon) {

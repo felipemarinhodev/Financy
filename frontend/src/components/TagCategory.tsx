@@ -27,5 +27,11 @@ type TagCategoryIconProps = {
 };
 export const TagCategoryIcon = ({ category }: TagCategoryIconProps) => {
   const { color, icon } = category;
-  return <Icon color={color} icon={icon} />;
+  return (
+    <Icon
+      color={color}
+      icon={icon}
+      className={`bg-${color}-light p-2 rounded-md`}
+    />
+  );
 };
