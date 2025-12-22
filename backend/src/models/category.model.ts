@@ -68,5 +68,5 @@ export class CategoryModel {
   @Field(() => UserModel, { nullable: true })
   user?: UserModel;
   @Field(() => TransactionDetailModel, { nullable: true })
-  details?: TransactionDetailModel;
+  detail?: TransactionDetailModel;
 }

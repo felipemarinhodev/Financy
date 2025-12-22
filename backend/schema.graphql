@@ -7,8 +7,7 @@ type CategoryModel {
   color: ColorCategory
   createdAt: DateTimeISO!
   description: String
-  detail: TransactionDetailModel!
-  details: TransactionDetailModel
+  detail: TransactionDetailModel
   icon: IconCategory
   id: ID!
   title: String!
