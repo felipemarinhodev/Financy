@@ -23,7 +23,7 @@ import {
 import { useMemo } from "react";
 
 type IconProps = {
-  color: ColorOptions | "none";
+  color: ColorOptions | "none" | "gray";
   icon: IconCategory;
   size?: number;
   className?: string;

@@ -2,8 +2,12 @@ import { Card } from "@/components/Card";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, Plus, Tag, Utensils } from "lucide-react";
 import { ItemCategory } from "./components/ItemCategory";
+import { useState } from "react";
+import { CategoryModal } from "./components/CategoryModal";
 
 export const Category = () => {
+  const [openDialog, setOpenDialog] = useState(false);
+
   return (
     <div className="flex flex-col gap-8">
       <div className="flex flex-row justify-between items-center">
@@ -11,7 +15,7 @@ export const Category = () => {
           <h1 className="text-2xl font-bold text-gray-800">Categorias</h1>
           <span>Organize suas transações por categorias</span>
         </div>
-        <Button>
+        <Button onClick={() => setOpenDialog(true)}>
           <Plus className="mr-2" size={16} />
           Nova categoria
         </Button>
@@ -44,7 +48,9 @@ export const Category = () => {
           <div className="flex flex-row gap-6 justify-start items-center p-6 bg-white rounded-2xl">
             <Utensils className="text-blue-base" size={32} />
             <div className="flex-1 flex flex-col">
-              <h2 className="text-gray-800 font-medium text-2xl">Alimentação</h2>
+              <h2 className="text-gray-800 font-medium text-2xl">
+                Alimentação
+              </h2>
               <span className="text-gray-500 font-medium text-xs uppercase">
                 categoria mais utilizada
               </span>
@@ -88,7 +94,7 @@ export const Category = () => {
             color: "orange",
             icon: "shopping_cart",
           }}
-          />
+        />
         <ItemCategory
           category={{
             id: "5",
@@ -126,6 +132,7 @@ export const Category = () => {
           }}
         />
       </section>
+      <CategoryModal open={openDialog} onOpenChange={setOpenDialog} />
     </div>
   );
 };
