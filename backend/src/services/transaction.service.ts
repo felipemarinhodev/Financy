@@ -37,13 +37,36 @@ export class TransactionService {
     return true;
   }
 
-  findAllByUserId(userId: string) {
-    const transactions = prismaClient.transaction.findMany({
+  async findAllByUserId(userId: string) {
+    const transactions = await prismaClient.transaction.findMany({
       where: {
         userId,
       },
     });
     return transactions;
+  }
+
+  async findAllByCategoryId(categoryId: string, userId: string) {
+    const result = await prismaClient.transaction.groupBy({
+      by: ["categoryId"],
+      where: {
+        categoryId,
+        userId,
+      },
+      _sum: {
+        amount: true,
+      },
+      _count: {
+        categoryId: true,
+      },
+    });
+
+    const formattedResult = result.map((item) => ({
+      categoryId: item.categoryId,
+      totalAmount: item._sum.amount,
+      transactionCount: item._count.categoryId,
+    }));
+    return formattedResult[0];
   }
 
   async update(data: UpdateTransactionInput, id: string, userId: string) {

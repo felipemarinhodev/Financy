@@ -6,6 +6,7 @@ import {
   registerEnumType,
 } from "type-graphql";
 import { UserModel } from "./user.model";
+import { TransactionDetailModel } from "./transaction.model";
 
 export enum ColorCategory {
   green = "green",
@@ -66,4 +67,6 @@ export class CategoryModel {
   updatedAt!: Date;
   @Field(() => UserModel, { nullable: true })
   user?: UserModel;
+  @Field(() => TransactionDetailModel, { nullable: true })
+  details?: TransactionDetailModel;
 }

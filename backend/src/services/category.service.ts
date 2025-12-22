@@ -68,6 +68,16 @@ export class CategoryService {
     return category;
   }
 
+  async findByIdAndUserId(categoryId: string, userId: string) {
+    const category = await prismaClient.category.findUnique({
+      where: {
+        id: categoryId,
+        userId,
+      },
+    });
+    return category;
+  }
+
   async update(data: UpdateCategoryInput, id: string, userId: string) {
     const categoryExist = await prismaClient.category.findUnique({
       where: {

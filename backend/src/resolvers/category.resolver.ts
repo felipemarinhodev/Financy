@@ -11,13 +11,14 @@ import { CreateCategoryInput, UpdateCategoryInput } from "../dtos/input";
 import { User } from "../generated/prisma/client";
 import { GqlUser } from "../graphql/decorators";
 import { isAuth } from "../middlewares";
-import { CategoryModel, UserModel } from "../models";
-import { CategoryService, UserService } from "../services";
+import { CategoryModel, TransactionDetailModel, UserModel } from "../models";
+import { CategoryService, TransactionService, UserService } from "../services";
 
 @Resolver(() => CategoryModel)
 @UseMiddleware(isAuth)
 export class CategoryResolver {
   private categoryService = new CategoryService();
+  private transactionService = new TransactionService();
   private userService = new UserService();
 
   @Mutation(() => CategoryModel)
@@ -52,11 +53,20 @@ export class CategoryResolver {
 
   @Query(() => [CategoryModel])
   async categories(@GqlUser() user: User) {
-    return this.categoryService.findAllByUserId(user.id);
+    const response = await this.categoryService.findAllByUserId(user.id);
+    return response;
   }
 
   @FieldResolver(() => UserModel)
   async user(@Root() category: CategoryModel) {
     return this.userService.findById(category.userId);
+  }
+
+  @FieldResolver(() => TransactionDetailModel)
+  async detail(@Root() category: CategoryModel) {
+    return this.transactionService.findAllByCategoryId(
+      category.id,
+      category.userId
+    );
   }
 }
