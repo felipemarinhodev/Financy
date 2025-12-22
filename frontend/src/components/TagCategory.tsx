@@ -1,5 +1,6 @@
 import type { ColorOptions, IconCategory } from "@/types";
 import { Icon } from "./Icon";
+import { cn } from "@/lib/utils";
 
 type Category = {
   title: string;
@@ -14,12 +15,11 @@ type TagCategoryProps = {
 export const TagCategory = ({ category }: TagCategoryProps) => {
   const { title, color } = category;
 
-  return (
-    <span
-      className={`bg-${color}-light text-${color}-base px-2 py-1 rounded-md text-xs font-medium`}>
-      {title}
-    </span>
+  const className = cn(
+    "px-4 py-1 rounded-4xl text-md font-medium",
+    `text-${color}-base bg-${color}-light`
   );
+  return <div className={className}>{title}</div>;
 };
 
 type TagCategoryIconProps = {
