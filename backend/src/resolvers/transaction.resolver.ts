@@ -26,6 +26,15 @@ export class TransactionResolver {
     @Arg("data", () => CreateTransactionInput) data: CreateTransactionInput,
     @GqlUser() user: User
   ) {
+    const hasCategory = await this.categoryService.findByIdAndUserId(
+      data.categoryId,
+      user.id
+    );
+
+    if (!hasCategory) {
+      throw new Error("Category not found");
+    }
+
     return this.transactionService.create(data, user.id);
   }
 
