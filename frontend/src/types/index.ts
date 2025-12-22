@@ -41,10 +41,19 @@ export type IconCategory =
   | "user"
   | "utensils";
 
-  export type Category = {
-    id: string;
-    title: string;
-    description: string;
-    color: ColorOptions;
-    icon: IconCategory;
+export type Category = {
+  id: string;
+  title: string;
+  color: ColorOptions;
+  description: string;
+  icon: IconCategory;
+  user?: {
+    id?: string;
+    name?: string;
   };
+  detail: {
+    categoryId: string;
+    totalAmount: number;
+    transactionCount: number;
+  };
+};

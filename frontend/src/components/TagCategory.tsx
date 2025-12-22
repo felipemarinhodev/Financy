@@ -1,12 +1,6 @@
-import type { ColorOptions, IconCategory } from "@/types";
+import type { Category } from "@/types";
 import { Icon } from "./Icon";
 import { cn } from "@/lib/utils";
-
-type Category = {
-  title: string;
-  color: ColorOptions;
-  icon: IconCategory;
-};
 
 type TagCategoryProps = {
   category: Omit<Category, "icon">;

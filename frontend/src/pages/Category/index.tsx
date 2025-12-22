@@ -1,12 +1,14 @@
 import { Card } from "@/components/Card";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, Plus, Tag, Utensils } from "lucide-react";
-import { ItemCategory } from "./components/ItemCategory";
 import { useState } from "react";
 import { CategoryModal } from "./components/CategoryModal";
+import { ItemCategory } from "./components/ItemCategory";
+import { useCategoryController } from "./useCategoryController";
 
 export const Category = () => {
   const [openDialog, setOpenDialog] = useState(false);
+  const { loading, categories } = useCategoryController();
 
   return (
     <div className="flex flex-col gap-8">
@@ -59,78 +61,10 @@ export const Category = () => {
         </Card>
       </div>
       <section className="grid lg:grid-cols-4 gap-4">
-        <ItemCategory
-          category={{
-            id: "2",
-            title: "Entretenimento",
-            description: "Cinema, jogos e lazer",
-            color: "pink",
-            icon: "ticket",
-          }}
-        />
-        <ItemCategory
-          category={{
-            id: "1",
-            title: "Alimentação",
-            description: "Despesas com alimentação",
-            color: "blue",
-            icon: "utensils",
-          }}
-        />
-        <ItemCategory
-          category={{
-            id: "3",
-            title: "Investimentos",
-            description: "Aplicações e retornos financeiros",
-            color: "green",
-            icon: "piggy_bank",
-          }}
-        />
-        <ItemCategory
-          category={{
-            id: "4",
-            title: "Mercado",
-            description: "Compras de supermercado e mantimentos",
-            color: "orange",
-            icon: "shopping_cart",
-          }}
-        />
-        <ItemCategory
-          category={{
-            id: "5",
-            title: "Salário",
-            description: "Renda mensal e bonificações",
-            color: "green",
-            icon: "briefcase_business",
-          }}
-        />
-        <ItemCategory
-          category={{
-            id: "6",
-            title: "Saúde",
-            description: "Medicamentos, consultas e exames",
-            color: "red",
-            icon: "heart_pulse",
-          }}
-        />
-        <ItemCategory
-          category={{
-            id: "7",
-            title: "Transportes",
-            description: "Gasolina, transporte público e viagens",
-            color: "purple",
-            icon: "car_front",
-          }}
-        />
-        <ItemCategory
-          category={{
-            id: "8",
-            title: "Utilidades",
-            description: "Energia, água, internet e luz",
-            color: "yellow",
-            icon: "tool_case",
-          }}
-        />
+        {!loading &&
+          categories.map((category) => (
+            <ItemCategory key={category.id} category={category} />
+          ))}
       </section>
       <CategoryModal open={openDialog} onOpenChange={setOpenDialog} />
     </div>

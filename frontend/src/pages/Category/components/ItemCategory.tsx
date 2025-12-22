@@ -23,14 +23,16 @@ export const ItemCategory = ({ category }: ItemCategoryProps) => {
         </div>
       </div>
       <div className="flex flex-col gap-1">
-        <h3 className="text-gray-800 font-semibold text-base">{category.title}</h3>
-        <span className="text-gray-600 text-sm">
-          {category.description}
-        </span>
+        <h3 className="text-gray-800 font-semibold text-base">
+          {category.title}
+        </h3>
+        <span className="text-gray-600 text-sm">{category.description}</span>
       </div>
       <div className="flex justify-between items-center">
         <TagCategory category={category} />
-        <span className="text-gray-600 text-sm font-normal">3 itens</span>
+        <span className="text-gray-600 text-sm font-normal">
+          {category.detail?.transactionCount || 0} itens
+        </span>
       </div>
     </Card>
   );
