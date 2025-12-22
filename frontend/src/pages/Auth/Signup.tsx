@@ -50,7 +50,7 @@ export function Signup() {
           onClick={() => handleCreateAccount(name, email, password)}
           disabled={isLoading}
           size="lg">
-          Entrar
+          Cadastrar
         </Button>
         <div className="flex flex-row items-center w-full">
           <hr className="border-gray-300 w-full" />
