@@ -6,18 +6,31 @@ import { SquarePen, Trash } from "lucide-react";
 
 type ItemCategoryProps = {
   category: Category;
+  onDelete: (categoryId: string) => void;
+  onEdit: (categoryId: string) => void;
 };
 
-export const ItemCategory = ({ category }: ItemCategoryProps) => {
+export const ItemCategory = ({
+  category,
+  onDelete,
+  onEdit,
+}: ItemCategoryProps) => {
   return (
     <Card className="justify-around">
       <div className="flex flex-row gap-5 justify-between">
         <TagCategoryIcon category={category} />
         <div>
-          <Button variant="outline" size="sm" className="mr-2">
+          <Button
+            variant="outline"
+            size="sm"
+            className="mr-2"
+            onClick={() => onDelete(category.id)}>
             <Trash size={16} className="text-danger" />
           </Button>
-          <Button variant="outline" size="sm">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => onEdit(category.id)}>
             <SquarePen size={16} className="text-gray-700" />
           </Button>
         </div>

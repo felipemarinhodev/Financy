@@ -1,5 +1,10 @@
-import { apolloClient } from "@/lib/graphql/apollo";
-import { CREATE_CATEGORY } from "@/lib/graphql/mutations/Category";
+import {
+  CREATE_CATEGORY,
+  UPDATE_CATEGORY,
+} from "@/lib/graphql/mutations/Category";
+import { GET_CATEGORIES } from "@/lib/graphql/queries/Category";
+import type { Category } from "@/types";
+import { useMutation } from "@apollo/client/react";
 import { useState } from "react";
 import { toast } from "sonner";
 import z from "zod";
@@ -21,36 +26,33 @@ type CreateCategoryMutationData = {
   };
 };
 
+type CategoryInput = {
+  title: string;
+  description?: string;
+  color?: string;
+  icon?: string;
+};
+
 export const useCategoryModalController = () => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleCreateCategory = async (
-    title: string,
-    description?: string,
-    color?: string,
-    icon?: string
-  ) => {
+  const [createCategory] = useMutation<
+    CreateCategoryMutationData,
+    { data: CategoryInput }
+  >(CREATE_CATEGORY, {
+    refetchQueries: [{ query: GET_CATEGORIES }],
+  });
+
+  const handleCreateCategory = async (input: CategoryInput) => {
     try {
-      createCategorySchema.parse({ title, description, color, icon });
+      createCategorySchema.parse(input);
       setIsLoading(true);
 
-      const { data } = await apolloClient.mutate<
-        CreateCategoryMutationData,
-        {
-          data: {
-            title: string;
-            description?: string;
-            color?: string;
-            icon?: string;
-          };
-        }
-      >({
-        mutation: CREATE_CATEGORY,
-        variables: { data: { title, description, icon, color } },
+      const { data } = await createCategory({
+        variables: { data: input },
       });
 
       if (data?.createCategory) {
-        toast.success("Category created successfully!");
         return true;
       }
       return false;
@@ -62,6 +64,50 @@ export const useCategoryModalController = () => {
       setIsLoading(false);
     }
   };
+  type EditCategoryMutationData = {
+    updateCategory: {
+      category: Category;
+    };
+  };
 
-  return { isLoading, handleCreateCategory };
+  type EditCategoryMutationInput = {
+    updateCategoryId: string;
+    data: Partial<CategoryInput>;
+  };
+  const [updateCategory] = useMutation<
+    EditCategoryMutationData,
+    EditCategoryMutationInput
+  >(UPDATE_CATEGORY, {
+    refetchQueries: [{ query: GET_CATEGORIES }],
+  });
+
+  const handleEditCategory = async (
+    categoryId: string,
+    input: Partial<CategoryInput>
+  ) => {
+    try {
+      setIsLoading(true);
+
+      const { data } = await updateCategory({
+        variables: {
+          updateCategoryId: categoryId,
+          data: input,
+        },
+      });
+
+      if (data?.updateCategory) {
+        return true;
+      }
+      return false;
+    } catch (error) {
+      setIsLoading(false);
+      toast.error("Failed to update category! Please try again.");
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+    // Implementation for editing a category will go here
+  };
+
+  return { isLoading, handleCreateCategory, handleEditCategory };
 };

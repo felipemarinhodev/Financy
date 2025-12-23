@@ -4,36 +4,24 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import type { ColorOptions } from "@/types";
+import type { Category, ColorOptions, IconCategory } from "@/types";
 import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCategoryModalController } from "./useCategoryModalController";
+import { toast } from "sonner";
 
 type CategoryModalProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  category?: Category | null;
 };
 
-type CategoryIcon =
-  | "briefcase_business"
-  | "car_front"
-  | "heart_pulse"
-  | "piggy_bank"
-  | "shopping_cart"
-  | "ticket"
-  | "tool_case"
-  | "utensils"
-  | "paw_print"
-  | "house"
-  | "gift"
-  | "dumbbell"
-  | "book_open"
-  | "baggage_claim"
-  | "mailbox"
-  | "receipt_text";
-
-export const CategoryModal = ({ open, onOpenChange }: CategoryModalProps) => {
-  const categoryIcons: readonly CategoryIcon[] = [
+export const CategoryModal = ({
+  category = null,
+  open,
+  onOpenChange,
+}: CategoryModalProps) => {
+  const categoryIcons: readonly IconCategory[] = [
     "briefcase_business",
     "car_front",
     "heart_pulse",
@@ -72,24 +60,38 @@ export const CategoryModal = ({ open, onOpenChange }: CategoryModalProps) => {
     yellow: "bg-yellow-base",
   };
 
-  const [categoryIcon, setCategoryIcon] =
-    useState<CategoryIcon>("briefcase_business");
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [categoryIcon, setCategoryIcon] = useState<IconCategory>(
+    category?.icon || "briefcase_business"
+  );
   const [color, setColor] = useState<
     "green" | "blue" | "purple" | "pink" | "red" | "orange" | "yellow"
-  >("green");
-  const { isLoading, handleCreateCategory } = useCategoryModalController();
+  >(category?.color || "green");
+  const [description, setDescription] = useState(category?.description || "");
+  const [title, setTitle] = useState(category?.title || "");
+  const { isLoading, handleCreateCategory, handleEditCategory } =
+    useCategoryModalController();
 
   const handleSaveCategory = async () => {
-    const success = await handleCreateCategory(
+    let success = false;
+    const input = {
       title,
       description,
       color,
-      categoryIcon
-    );
+      icon: categoryIcon,
+    };
+    if (category?.id) {
+      success = await handleEditCategory(category!.id, input);
+
+      if (success) {
+        toast.success("Category updated successfully!");
+      }
+    } else {
+      success = await handleCreateCategory(input);
+      if (success) {
+        toast.success("Category created successfully!");
+      }
+    }
     if (success) {
-      // Reset fields
       setTitle("");
       setDescription("");
       setColor("green");
@@ -98,12 +100,33 @@ export const CategoryModal = ({ open, onOpenChange }: CategoryModalProps) => {
     }
   };
 
+  useEffect(() => {
+    if (category) {
+      setTitle(category.title);
+      setDescription(category.description);
+      setColor(category.color);
+      setCategoryIcon(category.icon);
+    } else {
+      setTitle("");
+      setDescription("");
+      setColor("green");
+      setCategoryIcon("briefcase_business");
+    }
+  }, [category, open]);
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog key={category?.id || "new"} open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader className="space-y-2">
           <DialogTitle className="text-base font-semibold text-gray-800 mb-0">
-            Nova categoria
+            {category ? (
+              <>
+                Editar categoria{" "}
+                <span className="font-bold text-lg">{category.title}</span>
+              </>
+            ) : (
+              "Nova categoria"
+            )}
           </DialogTitle>
           <DialogDescription className="text-md font-normal text-gray-600">
             Organize suas transações criando categorias

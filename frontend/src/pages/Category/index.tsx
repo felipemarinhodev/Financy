@@ -1,3 +1,4 @@
+import { Alert } from "@/components/Alert";
 import { Card } from "@/components/Card";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, Plus, Tag, Utensils } from "lucide-react";
@@ -5,10 +6,30 @@ import { useState } from "react";
 import { CategoryModal } from "./components/CategoryModal";
 import { ItemCategory } from "./components/ItemCategory";
 import { useCategoryController } from "./useCategoryController";
+import type { Category as CategoryType } from "@/types";
 
 export const Category = () => {
   const [openDialog, setOpenDialog] = useState(false);
-  const { loading, categories } = useCategoryController();
+  const [isOpenDeleteAlert, setIsOpenDeleteAlert] = useState(false);
+  const { loading, categories, handleDeleteCategory } = useCategoryController();
+  const [categorySelected, setCategorySelected] = useState<CategoryType | null>(
+    null
+  );
+
+  const handleDeletion = (categoryId: string) => {
+    setCategorySelected(
+      categories.find((cat) => cat.id === categoryId) || null
+    );
+    if (categorySelected) {
+      setIsOpenDeleteAlert(true);
+    }
+  };
+
+  const handleEdition = (categoryId: string) => {
+    const category = categories.find((cat) => cat.id === categoryId) || null;
+    setCategorySelected(category);
+    setOpenDialog(true);
+  };
 
   return (
     <div className="flex flex-col gap-8">
@@ -17,7 +38,11 @@ export const Category = () => {
           <h1 className="text-2xl font-bold text-gray-800">Categorias</h1>
           <span>Organize suas transações por categorias</span>
         </div>
-        <Button onClick={() => setOpenDialog(true)}>
+        <Button
+          onClick={() => {
+            setCategorySelected(null);
+            setOpenDialog(true);
+          }}>
           <Plus className="mr-2" size={16} />
           Nova categoria
         </Button>
@@ -63,10 +88,29 @@ export const Category = () => {
       <section className="grid lg:grid-cols-4 gap-4">
         {!loading &&
           categories.map((category) => (
-            <ItemCategory key={category.id} category={category} />
+            <ItemCategory
+              key={category.id}
+              category={category}
+              onDelete={() => handleDeletion(category.id)}
+              onEdit={() => handleEdition(category.id)}
+            />
           ))}
       </section>
-      <CategoryModal open={openDialog} onOpenChange={setOpenDialog} />
+      <CategoryModal
+        open={openDialog}
+        onOpenChange={setOpenDialog}
+        category={categorySelected}
+      />
+      <Alert
+        isOpen={isOpenDeleteAlert}
+        onClose={() => setIsOpenDeleteAlert(false)}
+        title="Excluir Categoria"
+        description={`Tem certeza que deseja excluir a categoria "${categorySelected?.title}"? Esta ação não pode ser desfeita.`}
+        onConfirm={() => {
+          handleDeleteCategory(categorySelected!.id);
+          setCategorySelected(null);
+        }}
+      />
     </div>
   );
 };
