@@ -57,3 +57,12 @@ export type Category = {
     transactionCount: number;
   };
 };
+
+export type Transaction = {
+  id: string;
+  description: string;
+  amount: number;
+  type: "income" | "expense";
+  date: Date;
+  user?: User;
+};

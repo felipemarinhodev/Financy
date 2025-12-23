@@ -12,6 +12,7 @@ import { Highlight } from "./components/Highlight";
 import { TransactionItem } from "./components/TransactionItem";
 import { NewTransaction } from "@/components/NewTransaction";
 import { useState } from "react";
+import { Link } from "react-router";
 
 export const Dashboard = () => {
   const [openDialog, setOpenDialog] = useState(false);
@@ -82,12 +83,12 @@ export const Dashboard = () => {
       <Card className="h-fit">
         <div className="flex flex-row justify-between items-center">
           <span className="text-sm font-normal uppercase">Categorias</span>
-          <Button
-            variant="link"
+          <Link
+            to="/categories"
             className="text-green-base text-md font-medium px-0 has-[>svg]:px-0">
             Gerenciar{" "}
             <ChevronRight className="inline-block w-5 h-5 text-green-base" />
-          </Button>
+          </Link>
         </div>
 
         <CategoryTag

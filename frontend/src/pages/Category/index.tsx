@@ -11,7 +11,8 @@ import type { Category as CategoryType } from "@/types";
 export const Category = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [isOpenDeleteAlert, setIsOpenDeleteAlert] = useState(false);
-  const { loading, categories, handleDeleteCategory } = useCategoryController();
+  const { loading, categories, transactions, handleDeleteCategory } =
+    useCategoryController();
   const [categorySelected, setCategorySelected] = useState<CategoryType | null>(
     null
   );
@@ -53,7 +54,9 @@ export const Category = () => {
           <div className="flex flex-row gap-6 justify-start items-center p-6 bg-white rounded-2xl">
             <Tag className="text-gray-600" size={32} />
             <div className="flex-1 flex flex-col">
-              <h2 className="text-gray-800 font-medium text-2xl">8</h2>
+              <h2 className="text-gray-800 font-medium text-2xl">
+                {categories.length}
+              </h2>
               <span className="text-gray-500 font-medium text-xs uppercase">
                 Total de categorias
               </span>
@@ -64,7 +67,9 @@ export const Category = () => {
           <div className="flex flex-row gap-6 justify-start items-center p-6 bg-white rounded-2xl">
             <ArrowUpDown className="text-purple-base" size={32} />
             <div className="flex-1 flex flex-col">
-              <h2 className="text-gray-800 font-medium text-2xl">27</h2>
+              <h2 className="text-gray-800 font-medium text-2xl">
+                {transactions.length}
+              </h2>
               <span className="text-gray-500 font-medium text-xs uppercase">
                 Total de Transações
               </span>
