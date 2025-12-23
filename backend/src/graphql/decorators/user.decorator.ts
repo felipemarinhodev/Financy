@@ -13,7 +13,7 @@ export const GqlUser = () => {
         if (!user) throw new Error("User not found");
         return user;
       } catch (error) {
-        console.log("Error instantiating gqluser");
+        console.error("Error instantiating gqluser");
       }
     }
   );
