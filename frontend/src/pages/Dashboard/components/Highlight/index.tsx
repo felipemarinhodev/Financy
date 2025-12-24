@@ -4,7 +4,7 @@ import { useMemo } from "react";
 
 type HighlightProps = {
   title: string;
-  amount: string;
+  amount: number | string;
   icon: React.ReactNode;
 };
 

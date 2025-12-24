@@ -65,4 +65,11 @@ export type Transaction = {
   type: "income" | "expense";
   date: Date;
   user?: User;
+  category?: Category;
 };
+
+export interface BalanceTransactions {
+  income: number;
+  expense: number;
+  balance: number;
+}

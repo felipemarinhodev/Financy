@@ -18,9 +18,10 @@ export const useCategoryController = () => {
     data,
     error,
     loading: queryLoading,
-  } = useQuery<{ categories: Category[]; transactions: Transaction[] }>(
-    GET_CATEGORIES
-  );
+  } = useQuery<{
+    categories: Category[];
+    transactions: Transaction[];
+  }>(GET_CATEGORIES);
 
   useEffect(() => {
     setLoading(queryLoading);
