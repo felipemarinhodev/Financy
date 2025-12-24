@@ -7,6 +7,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -24,8 +25,6 @@ import { Type } from "@/components/Type";
 export const Transaction = () => {
   const [isOpenDeleteAlert, setIsOpenDeleteAlert] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
-  // const [transactionSelected, setTransactionSelected] =
-  //   useState<TransactionType | null>(null);
 
   const { categories, transactions } = useTransactionController();
 
@@ -45,7 +44,11 @@ export const Transaction = () => {
       </PageHeader>
 
       <Card className="grid grid-cols-4">
-        <TextField label="Buscar" placeholder="Buscar por descrição" icon="search" />
+        <TextField
+          label="Buscar"
+          placeholder="Buscar por descrição"
+          icon="search"
+        />
         <Select
           label="Tipo"
           items={[
@@ -97,14 +100,18 @@ export const Transaction = () => {
           {transactions?.map((transaction) => (
             <TableRow className="h-18" key={transaction.id}>
               <TableCell className="flex flex-row gap-4 h-18 items-center pl-6 font-semibold text-md text-gray-800 text-center">
-                <TagCategoryIcon category={transaction.category} />
+                {transaction.category && (
+                  <TagCategoryIcon category={transaction.category} />
+                )}
                 {transaction.description}
               </TableCell>
               <TableCell className="text-center text-md text-gray-800">
                 {dateFormatter(transaction.date)}
               </TableCell>
               <TableCell className="text-center">
-                <TagCategory category={transaction.category} />
+                {transaction.category && (
+                  <TagCategory category={transaction.category} />
+                )}
               </TableCell>
               <TableCell className="text-center">
                 <Type type={transaction.type} />
@@ -130,6 +137,13 @@ export const Transaction = () => {
             </TableRow>
           ))}
         </TableBody>
+        <TableFooter className="bg-white h-14">
+          <TableRow className="rounded-b-md shadow-md ">
+            <TableCell colSpan={6} className="text-right pr-6 font-semibold">
+              Total de {transactions?.length ?? 0} transações
+            </TableCell>
+          </TableRow>
+        </TableFooter>
       </Table>
       <Alert
         isOpen={isOpenDeleteAlert}

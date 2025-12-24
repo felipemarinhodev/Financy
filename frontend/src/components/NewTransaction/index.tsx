@@ -1,14 +1,13 @@
 import { cn } from "@/lib/utils";
+import { useCategory } from "@/stores/category";
 import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
 import { CircleArrowDown, CircleArrowUp } from "lucide-react";
 import { useState } from "react";
+import { Select } from "../Select";
 import { TextField } from "../TextField";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogHeader } from "../ui/dialog";
-import { Label } from "../ui/label";
 import { useNewTransctionController } from "./useNewTransactionController";
-import { useCategory } from "@/stores/category";
-import { Select } from "../Select";
 
 type NewTransactionProps = {
   open: boolean;
@@ -106,8 +105,6 @@ export const NewTransaction = ({ open, onOpenChange }: NewTransactionProps) => {
             />
           </div>
           <div>
-            <Label className="text-label mb-2">Categoria</Label>
-
             <Select
               label="Categoria"
               items={categories?.map((category) => ({
