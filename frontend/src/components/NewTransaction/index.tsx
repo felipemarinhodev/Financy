@@ -1,20 +1,14 @@
+import { cn } from "@/lib/utils";
 import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
-import { Dialog, DialogContent, DialogHeader } from "../ui/dialog";
-import { Button } from "../ui/button";
-import { TextField } from "../TextField";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
-import { Label } from "../ui/label";
 import { CircleArrowDown, CircleArrowUp } from "lucide-react";
 import { useState } from "react";
-import { cn } from "@/lib/utils";
+import { TextField } from "../TextField";
+import { Button } from "../ui/button";
+import { Dialog, DialogContent, DialogHeader } from "../ui/dialog";
+import { Label } from "../ui/label";
+import { useNewTransctionController } from "./useNewTransactionController";
+import { useCategory } from "@/stores/category";
+import { Select } from "../Select";
 
 type NewTransactionProps = {
   open: boolean;
@@ -25,6 +19,19 @@ export const NewTransaction = ({ open, onOpenChange }: NewTransactionProps) => {
   const [transactionType, setTransactionType] = useState<"income" | "expense">(
     "expense"
   );
+  const [description, setDescription] = useState("");
+  const [date, setDate] = useState("");
+  const [amount, setAmount] = useState("");
+  const [categoryId, setCategoryId] = useState("");
+  const { categories } = useCategory((state) => state);
+
+  const { handleCreateTransaction } = useNewTransctionController();
+
+  // const handleSubmit = async (event: React.FormEvent) => {
+  //   event.preventDefault();
+
+  //   const response = await handleCreateTransaction({});
+  // };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -79,29 +86,37 @@ export const NewTransaction = ({ open, onOpenChange }: NewTransactionProps) => {
           <TextField
             label="Descrição"
             placeholder="Ex.: Compra de supermercado"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
           />
           <div className="grid grid-cols-3 gap-4">
-            <TextField label="Data" placeholder="Selecione" type="date" />
-            <TextField label="Valor" placeholder="0,00" type="number" />
+            <TextField
+              label="Data"
+              placeholder="Selecione"
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+            />
+            <TextField
+              label="Valor"
+              placeholder="0,00"
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+            />
           </div>
           <div>
             <Label className="text-label mb-2">Categoria</Label>
 
-            <Select>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Selecione" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Categorias</SelectLabel>
-                  <SelectItem value="apple">Apple</SelectItem>
-                  <SelectItem value="banana">Banana</SelectItem>
-                  <SelectItem value="blueberry">Blueberry</SelectItem>
-                  <SelectItem value="grapes">Grapes</SelectItem>
-                  <SelectItem value="pineapple">Pineapple</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+            <Select
+              label="Categoria"
+              items={categories?.map((category) => ({
+                value: category.id,
+                label: category.title,
+              }))}
+              value={categoryId}
+              // onValueChange={(value) => setCategoryId(value)}
+            />
           </div>
         </form>
 

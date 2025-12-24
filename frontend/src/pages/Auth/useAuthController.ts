@@ -1,4 +1,5 @@
 import { useAuthStore } from "@/stores/auth";
+import { useCategory } from "@/stores/category";
 import type { RegisterInput } from "@/types";
 import { useCallback, useState } from "react";
 import { useNavigate } from "react-router";
@@ -8,6 +9,7 @@ import z from "zod";
 export const useAuthController = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { login, signup } = useAuthStore((state) => state);
+  const { setCategories } = useCategory((state) => state);
   const navigate = useNavigate();
 
   const handleLogin = useCallback(
@@ -17,6 +19,7 @@ export const useAuthController = () => {
         const isAuthenticated = await login({ email, password });
 
         if (isAuthenticated) {
+          await setCategories();
           toast.success(`Login successful! Welcome back. ${login.name}`);
           navigate("/dashboard");
         }
