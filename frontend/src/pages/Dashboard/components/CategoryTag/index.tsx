@@ -15,15 +15,17 @@ export const CategoryTag = ({ category }: CategoryTagProps) => {
     return formatCurrency(Number(amount));
   }, [amount]);
   return (
-    <div className="w-full flex flex-row items-center  gap-1">
+    <div className="w-full grid grid-cols-6 items-center  gap-1">
       {/* tag */}
-      <TagCategory category={category} />
+      <div className="col-span-3">
+        <TagCategory category={category} />
+      </div>
       {/* Quantity */}
-      <span className="text-gray-600 flex-1 text-sm font-normal text-right">
+      <span className="text-gray-600 text-sm font-normal text-right col-span-2">
         {transactionCount} {transactionCount === 1 ? "item" : "itens"}
       </span>
       {/* Amount */}
-      <span className="ml-2 text-gray-800 font-bold text-sm ">
+      <span className="ml-2 text-gray-800 font-bold text-sm text-right bg-violet-300">
         {currentValue}
       </span>
     </div>

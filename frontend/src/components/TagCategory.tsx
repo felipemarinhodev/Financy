@@ -4,16 +4,18 @@ import { cn } from "@/lib/utils";
 
 type TagCategoryProps = {
   category: Omit<Category, "icon">;
+  className?: string;
 };
 
-export const TagCategory = ({ category }: TagCategoryProps) => {
+export const TagCategory = ({ category, className = "" }: TagCategoryProps) => {
   const { title, color } = category;
 
-  const className = cn(
+  const classNames = cn(
     "px-4 py-1 rounded-4xl text-md font-medium",
-    `text-${color}-base bg-${color}-light`
+    `text-${color}-base bg-${color}-light w-fit`,
+    className
   );
-  return <div className={className}>{title}</div>;
+  return <div className={classNames}>{title}</div>;
 };
 
 type TagCategoryIconProps = {

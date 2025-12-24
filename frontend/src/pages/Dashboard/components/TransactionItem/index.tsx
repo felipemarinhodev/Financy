@@ -1,8 +1,8 @@
 import { TagCategory, TagCategoryIcon } from "@/components/TagCategory";
+import { Type } from "@/components/Type";
 import type { Transaction } from "@/types";
 import { formatCurrency } from "@/utils/Currency";
 import { dateFormatter } from "@/utils/DateFormatter";
-import { CircleArrowDown, CircleArrowUp } from "lucide-react";
 
 type TransactionItemProps = {
   transaction: Transaction;
@@ -24,11 +24,7 @@ export const TransactionItem = ({ transaction }: TransactionItemProps) => {
         {type === "income" ? "+ " : "- "}
         {formatCurrency(Number(amount))}
       </span>
-      {type === "income" ? (
-        <CircleArrowUp className="w-4 h-4 text-green-base" />
-      ) : (
-        <CircleArrowDown className="w-4 h-4 text-red-base" />
-      )}
+      <Type type={type} onlyIcon />
     </div>
   );
 };
