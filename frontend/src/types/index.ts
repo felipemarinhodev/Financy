@@ -35,6 +35,7 @@ export type IconCategory =
   | "paw_print"
   | "piggy_bank"
   | "receipt_text"
+  | "search"
   | "shopping_cart"
   | "ticket"
   | "tool_case"

@@ -6,6 +6,7 @@ import { Profile } from "./pages/Profile";
 import { Signup } from "./pages/Auth/Signup";
 import { LayoutDefault } from "./Layout/LayoutDefault";
 import { Category } from "./pages/Category";
+import { Transaction } from "./pages/Transaction";
 
 const router = createBrowserRouter([
   {
@@ -55,6 +56,16 @@ const router = createBrowserRouter([
       {
         index: true,
         Component: Category,
+      },
+    ],
+  },
+  {
+    path: "/transactions",
+    Component: LayoutAuth,
+    children: [
+      {
+        index: true,
+        Component: Transaction,
       },
     ],
   },

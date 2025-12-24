@@ -7,6 +7,7 @@ import { CategoryModal } from "./components/CategoryModal";
 import { ItemCategory } from "./components/ItemCategory";
 import { useCategoryController } from "./useCategoryController";
 import type { Category as CategoryType } from "@/types";
+import { PageHeader } from "@/components/PageHeader";
 
 export const Category = () => {
   const [openDialog, setOpenDialog] = useState(false);
@@ -34,11 +35,9 @@ export const Category = () => {
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="flex flex-row justify-between items-center">
-        <div className="flex flex-col">
-          <h1 className="text-2xl font-bold text-gray-800">Categorias</h1>
-          <span>Organize suas transações por categorias</span>
-        </div>
+      <PageHeader
+        title="Categorias"
+        subtitle="Organize suas transações por categorias">
         <Button
           onClick={() => {
             setCategorySelected(null);
@@ -47,7 +46,7 @@ export const Category = () => {
           <Plus className="mr-2" size={16} />
           Nova categoria
         </Button>
-      </div>
+      </PageHeader>
 
       <div className="grid lg:grid-cols-3 gap-6">
         <Card row>

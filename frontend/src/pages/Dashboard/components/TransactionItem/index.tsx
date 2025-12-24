@@ -1,6 +1,7 @@
 import { TagCategory, TagCategoryIcon } from "@/components/TagCategory";
 import type { Transaction } from "@/types";
 import { formatCurrency } from "@/utils/Currency";
+import { dateFormatter } from "@/utils/DateFormatter";
 import { CircleArrowDown, CircleArrowUp } from "lucide-react";
 
 type TransactionItemProps = {
@@ -15,7 +16,7 @@ export const TransactionItem = ({ transaction }: TransactionItemProps) => {
       <div className="flex flex-col flex-1 ml-4">
         <span className="text-gray-800 font-medium">{description}</span>
         <span className="text-gray-500 text-sm font-normal">
-          {new Date(date).toLocaleDateString("pt-BR")}
+          {dateFormatter(date)}
         </span>
       </div>
       {category && <TagCategory category={category} />}

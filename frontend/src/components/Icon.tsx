@@ -14,6 +14,7 @@ import {
   PawPrint,
   PiggyBank,
   ReceiptText,
+  Search,
   ShoppingCart,
   Ticket,
   ToolCase,
@@ -65,6 +66,9 @@ export const Icon = ({
       }
       case "shopping_cart": {
         return <ShoppingCart size={size} className={classNames} />;
+      }
+      case "search": {
+        return <Search size={size} className={classNames} />;
       }
       case "ticket": {
         return <Ticket size={size} className={classNames} />;
