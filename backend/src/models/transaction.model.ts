@@ -48,3 +48,12 @@ registerEnumType(TransactionType, {
     @Field(() => Number, { nullable: true })
     transactionCount?: number;
   }
+  @ObjectType()
+  export class BalanceDetailModel {
+    @Field(() => Number)
+    income: number;
+    @Field(() => Number)
+    expense: number;
+    @Field(() => Number)
+    balance: number;
+  }

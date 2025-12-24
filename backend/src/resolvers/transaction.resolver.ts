@@ -7,12 +7,17 @@ import {
   Root,
   UseMiddleware,
 } from "type-graphql";
-import { isAuth } from "../middlewares";
-import { CategoryModel, TransactionModel, UserModel } from "../models";
-import { CategoryService, TransactionService, UserService } from "../services";
 import { CreateTransactionInput, UpdateTransactionInput } from "../dtos/input";
 import { User } from "../generated/prisma/client";
 import { GqlUser } from "../graphql/decorators";
+import { isAuth } from "../middlewares";
+import {
+  BalanceDetailModel,
+  CategoryModel,
+  TransactionModel,
+  UserModel,
+} from "../models";
+import { CategoryService, TransactionService, UserService } from "../services";
 
 @Resolver(() => TransactionModel)
 @UseMiddleware(isAuth)
@@ -61,6 +66,11 @@ export class TransactionResolver {
   @Query(() => [TransactionModel])
   async transactions(@GqlUser() user: User) {
     return this.transactionService.findAllByUserId(user.id);
+  }
+
+  @Query(() => BalanceDetailModel)
+  async balanceTransactions(@GqlUser() user: User) {
+    return await this.transactionService.findBalanceByUserId(user.id);
   }
 
   @FieldResolver(() => UserModel)

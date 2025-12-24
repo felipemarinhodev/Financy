@@ -69,6 +69,35 @@ export class TransactionService {
     return formattedResult[0];
   }
 
+  async findBalanceByUserId(userId: string) {
+    const result = await prismaClient.transaction.groupBy({
+      by: ["type"],
+      where: {
+        userId,
+      },
+      _sum: {
+        amount: true,
+      },
+    });
+
+    const formattedResult = result.map((item) => ({
+      type: item.type,
+      totalAmount: item._sum.amount,
+    }));
+
+    const income =
+      formattedResult.find((item) => item.type === "income")?.totalAmount || 0;
+    const expense =
+      formattedResult.find((item) => item.type === "expense")?.totalAmount || 0;
+
+    const response = {
+      income,
+      expense,
+      balance: income - expense,
+    };
+    return response;
+  }
+
   async update(data: UpdateTransactionInput, id: string, userId: string) {
     const transaction = await prismaClient.transaction.findUnique({
       where: {

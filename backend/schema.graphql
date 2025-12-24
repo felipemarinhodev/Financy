@@ -3,6 +3,12 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+type BalanceDetailModel {
+  balance: Float!
+  expense: Float!
+  income: Float!
+}
+
 type CategoryModel {
   color: ColorCategory
   createdAt: DateTimeISO!
@@ -91,6 +97,7 @@ type Mutation {
 }
 
 type Query {
+  balanceTransactions: BalanceDetailModel!
   categories: [CategoryModel!]!
   health: String!
   transactions: [TransactionModel!]!
