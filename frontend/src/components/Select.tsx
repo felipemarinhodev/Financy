@@ -17,15 +17,22 @@ type SelectItem = {
 type SelectProps = {
   label: string;
   items?: SelectItem[];
+  helperMessage?: string;
+  onValueChange: (value: string) => void;
 } & React.ComponentProps<"select">;
 
-export const Select = ({ label, items, ...props }: SelectProps) => {
+export const Select = ({
+  label,
+  items,
+  helperMessage,
+  onValueChange,
+}: SelectProps) => {
   return (
     <div className="flex flex-col w-full gap-2 group">
       <Label className="text-md font-medium group-focus-within:text-green-base group-data-[error=true]:text-danger transition-colors duration-200">
         {label}
       </Label>
-      <UiSelect>
+      <UiSelect onValueChange={onValueChange}>
         <SelectTrigger className="w-full shadow-sm p-5.5">
           <SelectValue placeholder="Todas" />
         </SelectTrigger>
@@ -40,6 +47,9 @@ export const Select = ({ label, items, ...props }: SelectProps) => {
           </SelectGroup>
         </SelectContent>
       </UiSelect>
+      {helperMessage && (
+        <span className="text-gray-500 text-xs">{helperMessage}</span>
+      )}
     </div>
   );
 };

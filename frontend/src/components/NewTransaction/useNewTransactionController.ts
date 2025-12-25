@@ -1,5 +1,6 @@
 import { CREATE_TRANSACTION } from "@/lib/graphql/mutations/Transaction";
 import { DASHBOARD_DETAILS } from "@/lib/graphql/queries/Dashboard";
+import type { TypeTransaction } from "@/types";
 import { useMutation } from "@apollo/client/react";
 
 type CreateTransactionMutationData = {
@@ -10,9 +11,9 @@ type CreateTransactionMutationData = {
 
 type CreateTransactionInput = {
   amount: number;
-  type: "income" | "expense";
+  type: TypeTransaction;
   categoryId: string;
-  date: string;
+  date: Date;
   description?: string;
 };
 
@@ -35,6 +36,7 @@ export const useNewTransctionController = () => {
       }
       return false;
     } catch (error) {
+      console.error("Error creating transaction:", error);
       return false;
     }
   };

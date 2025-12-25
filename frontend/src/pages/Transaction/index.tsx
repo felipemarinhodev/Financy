@@ -55,6 +55,7 @@ export const Transaction = () => {
             { value: "income", label: "Entrada" },
             { value: "expense", label: "Saída" },
           ]}
+          onValueChange={() => {}}
         />
 
         <Select
@@ -63,6 +64,7 @@ export const Transaction = () => {
             value: category.id,
             label: category.title,
           }))}
+          onValueChange={() => {}}
         />
         <Select
           label="Período"
@@ -70,6 +72,7 @@ export const Transaction = () => {
             { value: "income", label: "Entrada" },
             { value: "expense", label: "Saída" },
           ]}
+          onValueChange={() => {}}
         />
       </Card>
 

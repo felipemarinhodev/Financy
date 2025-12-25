@@ -59,11 +59,13 @@ export type Category = {
   };
 };
 
+export type TypeTransaction = "income" | "expense";
+
 export type Transaction = {
   id: string;
   description: string;
   amount: number;
-  type: "income" | "expense";
+  type: TypeTransaction;
   date: Date;
   user?: User;
   category?: Category;
