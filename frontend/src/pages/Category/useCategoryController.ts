@@ -1,7 +1,6 @@
 import { DELETE_CATEGORY } from "@/lib/graphql/mutations/Category";
 import { GET_CATEGORIES } from "@/lib/graphql/queries/Category";
-import { useCategory } from "@/stores/category";
-import type { Transaction } from "@/types";
+import type { Category, Transaction } from "@/types";
 import { useMutation, useQuery } from "@apollo/client/react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -13,7 +12,7 @@ type DeleteCategoryMutation = {
 export const useCategoryController = () => {
   const [loading, setLoading] = useState(false);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const { categories } = useCategory();
+  const [categories, setCategories] = useState<Category[]>([]);
 
   const {
     data,
@@ -21,12 +20,16 @@ export const useCategoryController = () => {
     loading: queryLoading,
   } = useQuery<{
     transactions: Transaction[];
+    categories: Category[];
   }>(GET_CATEGORIES);
 
   useEffect(() => {
     setLoading(queryLoading);
     if (data?.transactions) {
       setTransactions(data.transactions);
+    }
+    if (data?.categories) {
+      setCategories(data.categories);
     }
 
     if (error) {

@@ -77,7 +77,11 @@ export const Dashboard = () => {
           <CategoryTag key={category.id} category={category} />
         ))}
       </Card>
-      <NewTransaction open={openDialog} onOpenChange={setOpenDialog} />
+      <NewTransaction
+        categories={categories || []}
+        open={openDialog}
+        onOpenChange={setOpenDialog}
+      />
     </div>
   );
 };

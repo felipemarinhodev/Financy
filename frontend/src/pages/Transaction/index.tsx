@@ -155,7 +155,11 @@ export const Transaction = () => {
         description={`Tem certeza que deseja excluir a transação ? Esta ação não pode ser desfeita.`}
         onConfirm={() => {}}
       />
-      <NewTransaction open={openDialog} onOpenChange={setOpenDialog} />
+      <NewTransaction
+        categories={categories ?? []}
+        open={openDialog}
+        onOpenChange={setOpenDialog}
+      />
     </div>
   );
 };

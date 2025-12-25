@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import { useCategory } from "@/stores/category";
 import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
 import { AlertCircleIcon, CircleArrowDown, CircleArrowUp } from "lucide-react";
 import { useState } from "react";
@@ -15,9 +14,12 @@ import {
 import { useNewTransctionController } from "./useNewTransactionController";
 import z from "zod";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
+import { toast } from "sonner";
+import type { Category } from "@/types";
 
 type NewTransactionProps = {
   open: boolean;
+  categories: Category[];
   onOpenChange: (open: boolean) => void;
 };
 
@@ -29,7 +31,11 @@ const transactionSchema = z.object({
   description: z.string(),
 });
 
-export const NewTransaction = ({ open, onOpenChange }: NewTransactionProps) => {
+export const NewTransaction = ({
+  categories,
+  open,
+  onOpenChange,
+}: NewTransactionProps) => {
   const [transactionType, setTransactionType] = useState<"income" | "expense">(
     "expense"
   );
@@ -37,7 +43,6 @@ export const NewTransaction = ({ open, onOpenChange }: NewTransactionProps) => {
   const [date, setDate] = useState<Date>(new Date());
   const [amount, setAmount] = useState<number>(0);
   const [categoryId, setCategoryId] = useState<string>("");
-  const { categories } = useCategory((state) => state);
 
   const { handleCreateTransaction } = useNewTransctionController();
 
@@ -61,14 +66,16 @@ export const NewTransaction = ({ open, onOpenChange }: NewTransactionProps) => {
       )} | error: ${JSON.stringify(error, null, 2)}`
     );
 
-    // console.log(error);
-    // if (!success) {
-    //   return;
-    // }
     const response = await handleCreateTransaction(transactionData);
-    console.log(`response: ${response}`);
-
-    // });
+    if (response) {
+      toast.success("Transação criada com sucesso!");
+      onOpenChange(false);
+      setTransactionType("expense");
+      setDescription("");
+      setDate(new Date());
+      setAmount(0);
+      setCategoryId("");
+    }
   };
 
   return (
