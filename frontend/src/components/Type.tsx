@@ -7,12 +7,12 @@ type TypePros = {
 };
 
 export const Type = ({ type, onlyIcon = false }: TypePros) => {
-  const className = type === "income" ? "text-green-500" : "text-red-500";
+  const className = type === "income" ? "text-green-base" : "text-red-base";
   const icon =
     type === "income" ? (
-      <CircleArrowUp size={16} />
+      <CircleArrowUp size={16} className="text-green-base" />
     ) : (
-      <CircleArrowDown size={16} />
+      <CircleArrowDown size={16} className="text-red-base" />
     );
 
   return (

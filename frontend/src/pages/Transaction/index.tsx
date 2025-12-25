@@ -26,7 +26,7 @@ export const Transaction = () => {
   const [isOpenDeleteAlert, setIsOpenDeleteAlert] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
 
-  const { categories, transactions } = useTransactionController();
+  const { categories, transactions, setFilter } = useTransactionController();
 
   return (
     <div className="flex flex-col gap-8">
@@ -48,23 +48,34 @@ export const Transaction = () => {
           label="Buscar"
           placeholder="Buscar por descrição"
           icon="search"
+          onChange={(e) => {
+            setFilter((prev) => ({ ...prev, description: e.target.value }));
+          }}
         />
         <Select
           label="Tipo"
           items={[
-            { value: "income", label: "Entrada" },
-            { value: "expense", label: "Saída" },
+            { value: "all", label: "Todos" },
+            { value: "income", label: <Type type="income" /> },
+            { value: "expense", label: <Type type="expense" /> },
           ]}
-          onValueChange={() => {}}
+          onValueChange={(value) => {
+            setFilter((prev) => ({
+              ...prev,
+              type: value === "all" ? "" : (value as "income" | "expense"),
+            }));
+          }}
         />
 
         <Select
           label="Categoria"
           items={categories?.map((category) => ({
             value: category.id,
-            label: category.title,
+            label: <TagCategory category={category} />,
           }))}
-          onValueChange={() => {}}
+          onValueChange={(value) => {
+            setFilter((prev) => ({ ...prev, categoryId: value }));
+          }}
         />
         <Select
           label="Período"
@@ -72,7 +83,9 @@ export const Transaction = () => {
             { value: "income", label: "Entrada" },
             { value: "expense", label: "Saída" },
           ]}
-          onValueChange={() => {}}
+          onValueChange={(value) => {
+            setFilter((prev) => ({ ...prev, period: value }));
+          }}
         />
       </Card>
 

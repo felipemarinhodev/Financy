@@ -9,13 +9,13 @@ import {
 } from "@/components/ui/select";
 import { Label } from "./ui/label";
 
-type SelectItem = {
+export type SelectItem = {
   value: string;
-  label: string;
+  label: string | React.ReactNode;
 };
 
 type SelectProps = {
-  label: string;
+  label: string | React.ReactNode;
   items?: SelectItem[];
   helperMessage?: string;
   onValueChange: (value: string) => void;
