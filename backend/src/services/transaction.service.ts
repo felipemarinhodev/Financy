@@ -73,6 +73,10 @@ export class TransactionService {
     const result = await prismaClient.transaction.groupBy({
       by: ["type"],
       where: {
+        date: {
+          gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+          lt: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1),
+        },
         userId,
       },
       _sum: {
