@@ -78,6 +78,40 @@ export class CategoryService {
     return category;
   }
 
+  async findMostUsedCategories(userId: string) {
+    const categories = await prismaClient.$queryRaw<
+      {
+        id: string;
+        title: string;
+        icon: string;
+        color: string;
+        usageCount: bigint;
+      }[]
+    >`
+      SELECT  cat.id, cat.title, cat.icon, cat.color, count(trs.id) as usageCount
+      FROM Category cat
+        LEFT JOIN "Transaction" trs on cat.id = trs.categoryId and cat.userId = trs.userId
+      WHERE cat.userId = ${userId}
+      group by cat.id
+      order by usageCount desc
+      limit 1
+ ;`;
+
+    if (!categories || categories.length === 0) {
+      return null;
+    }
+
+    const category = categories[0];
+    const result = {
+      id: category.id,
+      title: category.title,
+      color: category.color,
+      icon: category.icon,
+      usageCount: Number(category.usageCount),
+    };
+    return result;
+  }
+
   async update(data: UpdateCategoryInput, id: string, userId: string) {
     const categoryExist = await prismaClient.category.findUnique({
       where: {

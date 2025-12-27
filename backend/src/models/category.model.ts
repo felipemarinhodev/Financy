@@ -70,3 +70,17 @@ export class CategoryModel {
   @Field(() => TransactionDetailModel, { nullable: true })
   detail?: TransactionDetailModel;
 }
+
+@ObjectType()
+export class MostUsedCategoryModel {
+  @Field(() => ID)
+  id!: string;
+  @Field(() => String)
+  title!: string;
+  @Field(() => ColorCategory, { nullable: true })
+  color?: string;
+  @Field(() => IconCategory, { nullable: true })
+  icon?: string;
+  @Field(() => Number)
+  usageCount!: number;
+}

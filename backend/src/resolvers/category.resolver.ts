@@ -11,7 +11,12 @@ import { CreateCategoryInput, UpdateCategoryInput } from "../dtos/input";
 import { User } from "../generated/prisma/client";
 import { GqlUser } from "../graphql/decorators";
 import { isAuth } from "../middlewares";
-import { CategoryModel, TransactionDetailModel, UserModel } from "../models";
+import {
+  CategoryModel,
+  MostUsedCategoryModel,
+  TransactionDetailModel,
+  UserModel,
+} from "../models";
 import { CategoryService, TransactionService, UserService } from "../services";
 
 @Resolver(() => CategoryModel)
@@ -55,6 +60,11 @@ export class CategoryResolver {
   async categories(@GqlUser() user: User) {
     const response = await this.categoryService.findAllByUserId(user.id);
     return response;
+  }
+
+  @Query(() => MostUsedCategoryModel)
+  async mostUsedCategories(@GqlUser() user: User) {
+    return this.categoryService.findMostUsedCategories(user.id);
   }
 
   @FieldResolver(() => UserModel)
