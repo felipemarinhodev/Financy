@@ -1,5 +1,5 @@
 import { Card } from "@/components/Card";
-import { NewTransaction } from "@/components/NewTransaction";
+import { TransactionModal } from "@/components/TransactionModal";
 import { Button } from "@/components/ui/button";
 import {
   ChevronRight,
@@ -77,7 +77,7 @@ export const Dashboard = () => {
           <CategoryTag key={category.id} category={category} />
         ))}
       </Card>
-      <NewTransaction
+      <TransactionModal
         categories={categories || []}
         open={openDialog}
         onOpenChange={setOpenDialog}

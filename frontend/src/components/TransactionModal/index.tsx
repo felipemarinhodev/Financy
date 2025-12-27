@@ -1,7 +1,10 @@
 import { cn } from "@/lib/utils";
+import type { Category, Transaction } from "@/types";
 import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
-import { AlertCircleIcon, CircleArrowDown, CircleArrowUp } from "lucide-react";
+import { CircleArrowDown, CircleArrowUp } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
+import z from "zod";
 import { Select } from "../Select";
 import { TextField } from "../TextField";
 import { Button } from "../ui/button";
@@ -11,15 +14,12 @@ import {
   DialogFooter,
   DialogHeader,
 } from "../ui/dialog";
-import { useNewTransctionController } from "./useNewTransactionController";
-import z from "zod";
-import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
-import { toast } from "sonner";
-import type { Category } from "@/types";
+import { useTransactionModalController } from "./useTransactionModalController";
 
 type NewTransactionProps = {
   open: boolean;
   categories: Category[];
+  transaction?: Transaction | null;
   onOpenChange: (open: boolean) => void;
 };
 
@@ -31,20 +31,25 @@ const transactionSchema = z.object({
   description: z.string(),
 });
 
-export const NewTransaction = ({
+export const TransactionModal = ({
   categories,
   open,
+  transaction = null,
   onOpenChange,
 }: NewTransactionProps) => {
   const [transactionType, setTransactionType] = useState<"income" | "expense">(
-    "expense"
+    transaction?.type || "expense"
   );
-  const [description, setDescription] = useState<string>("");
-  const [date, setDate] = useState<Date>(new Date());
-  const [amount, setAmount] = useState<number>(0);
-  const [categoryId, setCategoryId] = useState<string>("");
+  const [description, setDescription] = useState<string>(
+    transaction?.description || ""
+  );
+  const [date, setDate] = useState<Date>(transaction?.date || new Date());
+  const [amount, setAmount] = useState<number>(transaction?.amount || 0);
+  const [categoryId, setCategoryId] = useState<string>(
+    transaction?.category?.id || ""
+  );
 
-  const { handleCreateTransaction } = useNewTransctionController();
+  const { handleCreateTransaction } = useTransactionModalController();
 
   const handleSubmit = async () => {
     const transactionData = {
@@ -83,15 +88,17 @@ export const NewTransaction = ({
       <DialogContent>
         <DialogHeader className="space-y-2">
           <DialogTitle className="text-base font-semibold text-gray-800 mb-0">
-            Nova transação
+            {transaction ? "Editar Transação" : "Nova Transação"}
           </DialogTitle>
           <DialogDescription className="text-md font-normal text-gray-600">
-            Registre sua despesa ou receita
+            {transaction
+              ? "Edite sua despesa ou receita"
+              : "Registre sua despesa ou receita"}
           </DialogDescription>
         </DialogHeader>
 
         <div className="flex flex-col gap-4">
-          <Alert variant="destructive">
+          {/* <Alert variant="destructive">
             <AlertCircleIcon />
             <AlertTitle>Erro ao salvar a transação</AlertTitle>
             <AlertDescription>
@@ -102,7 +109,7 @@ export const NewTransaction = ({
                 <li>Verify billing address</li>
               </ul>
             </AlertDescription>
-          </Alert>
+          </Alert> */}
           <div className="grid grid-cols-2 w-full p-2 border border-gray-200 rounded-md">
             <Button
               size="lg"

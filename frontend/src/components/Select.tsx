@@ -18,6 +18,7 @@ type SelectProps = {
   label: string | React.ReactNode;
   items?: SelectItem[];
   helperMessage?: string;
+  placeholder?: string;
   onValueChange: (value: string) => void;
 } & React.ComponentProps<"select">;
 
@@ -25,6 +26,7 @@ export const Select = ({
   label,
   items,
   helperMessage,
+  placeholder = "Todas",
   onValueChange,
 }: SelectProps) => {
   return (
@@ -34,7 +36,7 @@ export const Select = ({
       </Label>
       <UiSelect onValueChange={onValueChange}>
         <SelectTrigger className="w-full shadow-sm p-5.5">
-          <SelectValue placeholder="Todas" />
+          <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>

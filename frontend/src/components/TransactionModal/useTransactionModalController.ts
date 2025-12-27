@@ -3,13 +3,13 @@ import { DASHBOARD_DETAILS } from "@/lib/graphql/queries/Dashboard";
 import type { TypeTransaction } from "@/types";
 import { useMutation } from "@apollo/client/react";
 
-type CreateTransactionMutationData = {
+type TransactionModalMutationData = {
   createTransaction: {
     id: string;
   };
 };
 
-type CreateTransactionInput = {
+type TransactionModalInput = {
   amount: number;
   type: TypeTransaction;
   categoryId: string;
@@ -17,15 +17,15 @@ type CreateTransactionInput = {
   description?: string;
 };
 
-export const useNewTransctionController = () => {
+export const useTransactionModalController = () => {
   const [createTransaction] = useMutation<
-    CreateTransactionMutationData,
-    { data: CreateTransactionInput }
+    TransactionModalMutationData,
+    { data: TransactionModalInput }
   >(CREATE_TRANSACTION, {
     refetchQueries: [{ query: DASHBOARD_DETAILS }],
   });
 
-  const handleCreateTransaction = async (input: CreateTransactionInput) => {
+  const handleCreateTransaction = async (input: TransactionModalInput) => {
     try {
       const { data } = await createTransaction({
         variables: { data: input },

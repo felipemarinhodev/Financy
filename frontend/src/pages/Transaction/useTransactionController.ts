@@ -1,6 +1,7 @@
+import { DELETE_TRANSACTION } from "@/lib/graphql/mutations/Transaction";
 import { DASHBOARD_DETAILS } from "@/lib/graphql/queries/Dashboard";
 import type { Category, Transaction, TypeTransaction } from "@/types";
-import { useQuery } from "@apollo/client/react";
+import { useMutation, useQuery } from "@apollo/client/react";
 import { useEffect, useState } from "react";
 
 type TransactionFilter = {
@@ -21,7 +22,13 @@ export const useTransactionController = () => {
     type: "",
     categoryId: "",
     period: "",
-  }); // Initial filter state
+  });
+  const [pagination, setPagination] = useState<{
+    pages: number;
+    limit: number;
+    current: number;
+    total: number;
+  }>({ pages: 0, limit: 3, current: 1, total: 0 });
 
   useEffect(() => {
     if (!transactions) return;
@@ -42,6 +49,12 @@ export const useTransactionController = () => {
       );
     }
 
+    setPagination((prev) => ({
+      ...prev,
+      total: result.length,
+      pages: Math.ceil(result.length / prev.limit),
+    }));
+
     setFilteredTransactions(result);
   }, [filter, transactions]);
 
@@ -50,18 +63,29 @@ export const useTransactionController = () => {
     transactions: Transaction[];
   }>(DASHBOARD_DETAILS);
 
+  const [deleteTransaction] = useMutation<
+    { deleteTransaction: boolean },
+    { deleteTransactionId: string }
+  >(DELETE_TRANSACTION, {
+    refetchQueries: [{ query: DASHBOARD_DETAILS }],
+  });
+
   useEffect(() => {
     if (data?.transactions) {
-      setTransactions(data.transactions);
+      setTransactions(data.transactions.slice(0, pagination.limit));
     }
     if (data?.categories) {
       setCategories(data.categories);
     }
   }, [data]);
 
-  useEffect(() => {
-    console.log(`filter: ${JSON.stringify(filter, null, 2)}`);
-  }, [filter]);
+  // useEffect(() => {}, [filter]);
 
-  return { categories, transactions: filteredTransactions, setFilter };
+  return {
+    categories,
+    pagination,
+    transactions: filteredTransactions,
+    deleteTransaction,
+    setFilter,
+  };
 };
