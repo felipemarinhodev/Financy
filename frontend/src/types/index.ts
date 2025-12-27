@@ -59,6 +59,15 @@ export type Category = {
   };
 };
 
+export type MostUsedCategory = {
+  id: string;
+  title: string;
+  color: ColorOptions;
+  description: string;
+  icon: IconCategory;
+  usageCount: number;
+};
+
 export type TypeTransaction = "income" | "expense";
 
 export type Transaction = {

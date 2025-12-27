@@ -28,5 +28,12 @@ export const GET_CATEGORIES = gql`
         id
       }
     }
+    mostUsedCategories {
+      id
+      title
+      icon
+      usageCount
+      color
+    }
   }
 `;

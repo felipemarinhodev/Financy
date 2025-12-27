@@ -1,6 +1,6 @@
 import { DELETE_CATEGORY } from "@/lib/graphql/mutations/Category";
 import { GET_CATEGORIES } from "@/lib/graphql/queries/Category";
-import type { Category, Transaction } from "@/types";
+import type { Category, MostUsedCategory, Transaction } from "@/types";
 import { useMutation, useQuery } from "@apollo/client/react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -13,6 +13,8 @@ export const useCategoryController = () => {
   const [loading, setLoading] = useState(false);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [mostUsedCategory, setMostUsedCategory] =
+    useState<MostUsedCategory | null>(null);
 
   const {
     data,
@@ -21,6 +23,7 @@ export const useCategoryController = () => {
   } = useQuery<{
     transactions: Transaction[];
     categories: Category[];
+    mostUsedCategories: MostUsedCategory;
   }>(GET_CATEGORIES);
 
   useEffect(() => {
@@ -30,6 +33,9 @@ export const useCategoryController = () => {
     }
     if (data?.categories) {
       setCategories(data.categories);
+    }
+    if (data?.mostUsedCategories) {
+      setMostUsedCategory(data.mostUsedCategories);
     }
 
     if (error) {
@@ -64,6 +70,7 @@ export const useCategoryController = () => {
   return {
     loading,
     categories,
+    mostUsedCategory,
     transactions,
     handleDeleteCategory,
   };

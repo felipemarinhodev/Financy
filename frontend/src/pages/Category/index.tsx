@@ -1,19 +1,25 @@
 import { Alert } from "@/components/Alert";
 import { Card } from "@/components/Card";
+import { Icon } from "@/components/Icon";
+import { PageHeader } from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
-import { ArrowUpDown, Plus, Tag, Utensils } from "lucide-react";
+import type { Category as CategoryType } from "@/types";
+import { ArrowUpDown, Plus, Tag } from "lucide-react";
 import { useState } from "react";
 import { CategoryModal } from "./components/CategoryModal";
 import { ItemCategory } from "./components/ItemCategory";
 import { useCategoryController } from "./useCategoryController";
-import type { Category as CategoryType } from "@/types";
-import { PageHeader } from "@/components/PageHeader";
 
 export const Category = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [isOpenDeleteAlert, setIsOpenDeleteAlert] = useState(false);
-  const { loading, categories, transactions, handleDeleteCategory } =
-    useCategoryController();
+  const {
+    loading,
+    categories,
+    transactions,
+    mostUsedCategory,
+    handleDeleteCategory,
+  } = useCategoryController();
   const [categorySelected, setCategorySelected] = useState<CategoryType | null>(
     null
   );
@@ -77,10 +83,16 @@ export const Category = () => {
         </Card>
         <Card row>
           <div className="flex flex-row gap-6 justify-start items-center p-6 bg-white rounded-2xl">
-            <Utensils className="text-blue-base" size={32} />
+            {mostUsedCategory && (
+              <Icon
+                icon={mostUsedCategory?.icon}
+                color={mostUsedCategory?.color}
+                className="bg-transparent p-0"
+              />
+            )}
             <div className="flex-1 flex flex-col">
               <h2 className="text-gray-800 font-medium text-2xl">
-                Alimentação
+                {mostUsedCategory?.title || "N/A"}
               </h2>
               <span className="text-gray-500 font-medium text-xs uppercase">
                 categoria mais utilizada
