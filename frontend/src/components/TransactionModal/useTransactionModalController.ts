@@ -1,7 +1,10 @@
-import { CREATE_TRANSACTION } from "@/lib/graphql/mutations/Transaction";
+import {
+  CREATE_TRANSACTION,
+  UPDATE_TRANSACTION,
+} from "@/lib/graphql/mutations/Transaction";
 import { GET_CATEGORIES } from "@/lib/graphql/queries/Category";
 import { DASHBOARD_DETAILS } from "@/lib/graphql/queries/Dashboard";
-import type { TypeTransaction } from "@/types";
+import type { Transaction, TypeTransaction } from "@/types";
 import { useMutation } from "@apollo/client/react";
 
 type TransactionModalMutationData = {
@@ -18,11 +21,33 @@ type TransactionModalInput = {
   description?: string;
 };
 
+type TransactionInput = {
+  amount: number;
+  type: TypeTransaction;
+  categoryId: string;
+  date: Date;
+  description: string;
+};
+type EditTransactionMutationData = {
+  updateTransaction: Partial<Transaction>;
+};
 export const useTransactionModalController = () => {
   const [createTransaction] = useMutation<
     TransactionModalMutationData,
     { data: TransactionModalInput }
   >(CREATE_TRANSACTION, {
+    refetchQueries: [{ query: DASHBOARD_DETAILS }, { query: GET_CATEGORIES }],
+  });
+
+  type EditTransactionMutationInput = {
+    updateTransactionId: string;
+    data: Partial<TransactionInput>;
+  };
+
+  const [updateTransaction] = useMutation<
+    EditTransactionMutationData,
+    EditTransactionMutationInput
+  >(UPDATE_TRANSACTION, {
     refetchQueries: [{ query: DASHBOARD_DETAILS }, { query: GET_CATEGORIES }],
   });
 
@@ -42,5 +67,24 @@ export const useTransactionModalController = () => {
     }
   };
 
-  return { handleCreateTransaction };
+  const handleUpdateTransaction = async (
+    transactionId: string,
+    input: Partial<TransactionInput>
+  ) => {
+    try {
+      const { data } = await updateTransaction({
+        variables: { updateTransactionId: transactionId, data: input },
+      });
+
+      if (data?.updateTransaction) {
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error("Error updating transaction:", error);
+      return false;
+    }
+  };
+
+  return { handleCreateTransaction, handleUpdateTransaction };
 };

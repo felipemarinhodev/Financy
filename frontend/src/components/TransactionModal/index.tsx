@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import type { Category, Transaction } from "@/types";
 import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
 import { CircleArrowDown, CircleArrowUp } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import z from "zod";
 import { Select } from "../Select";
@@ -15,6 +15,8 @@ import {
   DialogHeader,
 } from "../ui/dialog";
 import { useTransactionModalController } from "./useTransactionModalController";
+import { Calendar } from "../Calendar";
+import { TagCategory } from "../TagCategory";
 
 type NewTransactionProps = {
   open: boolean;
@@ -43,13 +45,34 @@ export const TransactionModal = ({
   const [description, setDescription] = useState<string>(
     transaction?.description || ""
   );
-  const [date, setDate] = useState<Date>(transaction?.date || new Date());
+  const [date, setDate] = useState<Date | undefined>(
+    transaction?.date || undefined
+  );
   const [amount, setAmount] = useState<number>(transaction?.amount || 0);
   const [categoryId, setCategoryId] = useState<string>(
     transaction?.category?.id || ""
   );
 
-  const { handleCreateTransaction } = useTransactionModalController();
+  useEffect(() => {
+    if (transaction) {
+      console.log("transaction: ", transaction.category?.id);
+
+      setTransactionType(transaction.type);
+      setDescription(transaction.description);
+      setDate(transaction.date);
+      setAmount(transaction.amount);
+      setCategoryId(transaction.category?.id || "");
+      return;
+    }
+    setTransactionType("expense");
+    setDescription("");
+    setDate(undefined);
+    setAmount(0);
+    setCategoryId("");
+  }, [transaction]);
+
+  const { handleCreateTransaction, handleUpdateTransaction } =
+    useTransactionModalController();
 
   const handleSubmit = async () => {
     const transactionData = {
@@ -71,13 +94,19 @@ export const TransactionModal = ({
       )} | error: ${JSON.stringify(error, null, 2)}`
     );
 
-    const response = await handleCreateTransaction(transactionData);
+    const response = transaction
+      ? await handleUpdateTransaction(transaction.id, transactionData)
+      : await handleCreateTransaction(transactionData);
     if (response) {
-      toast.success("Transação criada com sucesso!");
+      toast.success(
+        transaction
+          ? "Transação atualizada com sucesso!"
+          : "Transação criada com sucesso!"
+      );
       onOpenChange(false);
       setTransactionType("expense");
       setDescription("");
-      setDate(new Date());
+      setDate(undefined);
       setAmount(0);
       setCategoryId("");
     }
@@ -85,10 +114,12 @@ export const TransactionModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent key={transaction?.id || "new"}>
         <DialogHeader className="space-y-2">
           <DialogTitle className="text-base font-semibold text-gray-800 mb-0">
-            {transaction ? "Editar Transação" : "Nova Transação"}
+            {transaction
+              ? `Editar Transação: ${transaction.description}`
+              : "Nova Transação"}
           </DialogTitle>
           <DialogDescription className="text-md font-normal text-gray-600">
             {transaction
@@ -155,14 +186,7 @@ export const TransactionModal = ({
             onChange={(e) => setDescription(e.target.value)}
           />
           <div className="grid grid-cols-3 gap-4">
-            <TextField
-              label="Data"
-              name="date"
-              placeholder="Selecione"
-              type="date"
-              value={date.toISOString().split("T")[0]}
-              onChange={(e) => setDate(new Date(e.target.value))}
-            />
+            <Calendar label="Data" value={date} onChange={setDate} />
             <TextField
               label="Valor"
               name="amount"
@@ -178,7 +202,7 @@ export const TransactionModal = ({
               label="Categoria"
               items={categories?.map((category) => ({
                 value: category.id,
-                label: category.title,
+                label: <TagCategory category={category} />,
               }))}
               value={categoryId}
               onValueChange={(value) => setCategoryId(value)}

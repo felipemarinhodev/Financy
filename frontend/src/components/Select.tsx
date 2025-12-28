@@ -27,6 +27,7 @@ export const Select = ({
   items,
   helperMessage,
   placeholder = "Todas",
+  value,
   onValueChange,
 }: SelectProps) => {
   return (
@@ -34,7 +35,7 @@ export const Select = ({
       <Label className="text-md font-medium group-focus-within:text-green-base group-data-[error=true]:text-danger transition-colors duration-200">
         {label}
       </Label>
-      <UiSelect onValueChange={onValueChange}>
+      <UiSelect onValueChange={onValueChange} value={value?.toString()}>
         <SelectTrigger className="w-full shadow-sm p-5.5">
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>

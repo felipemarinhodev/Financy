@@ -13,3 +13,14 @@ export const DELETE_TRANSACTION = gql`
     deleteTransaction(id: $deleteTransactionId)
   }
 `;
+
+export const UPDATE_TRANSACTION = gql`
+  mutation UpdateTransaction(
+    $updateTransactionId: String!
+    $data: UpdateTransactionInput!
+  ) {
+    updateTransaction(id: $updateTransactionId, data: $data) {
+      id
+    }
+  }
+`;
