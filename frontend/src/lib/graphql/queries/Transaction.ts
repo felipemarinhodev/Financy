@@ -1,7 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const TRANSACTIONS = gql`
-  transactions {
+  query getTransactionsDetails {
+    transactions {
       id
       description
       amount
@@ -23,5 +24,19 @@ export const TRANSACTIONS = gql`
       color
       description
       icon
+      user {
+        id
+        name
+      }
+      detail {
+        categoryId
+        totalAmount
+        transactionCount
+      }
     }
+    transactionPeriods {
+      oldestDate
+      newestDate
+    }
+  }
 `;

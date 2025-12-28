@@ -19,8 +19,14 @@ export const Transaction = () => {
   const [selectedTransaction, setSelectedTransaction] =
     useState<TransactionType | null>(null);
 
-  const { categories, pagination, transactions, deleteTransaction, setFilter } =
-    useTransactionController();
+  const {
+    categories,
+    pagination,
+    transactions,
+    listMonths,
+    deleteTransaction,
+    setFilter,
+  } = useTransactionController();
 
   return (
     <div className="flex flex-col gap-8">
@@ -81,12 +87,12 @@ export const Transaction = () => {
         <Select
           label="Período"
           placeholder="Todos"
-          items={[
-            { value: "income", label: "Entrada" },
-            { value: "expense", label: "Saída" },
-          ]}
+          items={[{ label: "Todos Períodos", value: "all" }, ...listMonths]}
           onValueChange={(value) => {
-            setFilter((prev) => ({ ...prev, period: value }));
+            setFilter((prev) => ({
+              ...prev,
+              period: value === "all" ? null : new Date(value),
+            }));
           }}
         />
       </Card>
