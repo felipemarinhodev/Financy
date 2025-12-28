@@ -16,6 +16,7 @@ import {
   CategoryModel,
   TransactionModel,
   TransactionPeriodsModel,
+  TransactionsModel,
   UserModel,
 } from "../models";
 import { CategoryService, TransactionService, UserService } from "../services";
@@ -64,8 +65,8 @@ export class TransactionResolver {
     return this.transactionService.delete(id, user.id);
   }
 
-  @Query(() => [TransactionModel])
-  async transactions(@GqlUser() user: User) {
+  @Query(() => TransactionsModel)
+  async getTransactions(@GqlUser() user: User) {
     return this.transactionService.findAllByUserId(user.id);
   }
 

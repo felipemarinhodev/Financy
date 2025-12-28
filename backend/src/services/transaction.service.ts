@@ -38,12 +38,25 @@ export class TransactionService {
   }
 
   async findAllByUserId(userId: string) {
-    const transactions = await prismaClient.transaction.findMany({
+    const totalItems = await prismaClient.transaction.count({
       where: {
         userId,
       },
     });
-    return transactions;
+
+    if (totalItems === 0) {
+      return [];
+    }
+    const transactions = await prismaClient.transaction.findMany({
+      where: {
+        userId,
+      },
+      orderBy: {
+        date: "desc",
+      },
+      take: 10,
+    });
+    return { transactions, pagination: { totalItems } };
   }
 
   async findAllByCategoryId(categoryId: string, userId: string) {

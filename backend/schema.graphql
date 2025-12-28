@@ -104,13 +104,17 @@ type Mutation {
   updateTransaction(data: UpdateTransactionInput!, id: String!): TransactionModel!
 }
 
+type PaginationModel {
+  totalItems: Float!
+}
+
 type Query {
   balanceTransactions: BalanceDetailModel!
   categories: [CategoryModel!]!
+  getTransactions: TransactionsModel!
   health: String!
   mostUsedCategories: MostUsedCategoryModel!
   transactionPeriods: TransactionPeriodsModel!
-  transactions: [TransactionModel!]!
 }
 
 input RegisterInput {
@@ -152,6 +156,11 @@ type TransactionPeriodsModel {
 enum TransactionType {
   expense
   income
+}
+
+type TransactionsModel {
+  pagination: PaginationModel
+  transactions: [TransactionModel!]
 }
 
 input UpdateCategoryInput {
