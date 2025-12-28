@@ -102,6 +102,25 @@ export class TransactionService {
     return response;
   }
 
+  async findPeriodsByUserId(userId: string) {
+    const result = await prismaClient.transaction.aggregate({
+      where: {
+        userId,
+      },
+      _min: {
+        date: true,
+      },
+      _max: {
+        date: true,
+      },
+    });
+
+    return {
+      oldestDate: result._min.date,
+      newestDate: result._max.date,
+    };
+  }
+
   async update(data: UpdateTransactionInput, id: string, userId: string) {
     const transaction = await prismaClient.transaction.findUnique({
       where: {

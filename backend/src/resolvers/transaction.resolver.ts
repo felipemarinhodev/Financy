@@ -15,6 +15,7 @@ import {
   BalanceDetailModel,
   CategoryModel,
   TransactionModel,
+  TransactionPeriodsModel,
   UserModel,
 } from "../models";
 import { CategoryService, TransactionService, UserService } from "../services";
@@ -71,6 +72,11 @@ export class TransactionResolver {
   @Query(() => BalanceDetailModel)
   async balanceTransactions(@GqlUser() user: User) {
     return await this.transactionService.findBalanceByUserId(user.id);
+  }
+
+  @Query(() => TransactionPeriodsModel)
+  async transactionPeriods(@GqlUser() user: User) {
+    return await this.transactionService.findPeriodsByUserId(user.id);
   }
 
   @FieldResolver(() => UserModel)

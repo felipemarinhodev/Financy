@@ -57,3 +57,11 @@ registerEnumType(TransactionType, {
     @Field(() => Number)
     balance: number;
   }
+
+  @ObjectType()
+  export class TransactionPeriodsModel {
+    @Field(() => GraphQLISODateTime)
+    oldestDate: Date;
+    @Field(() => GraphQLISODateTime)
+    newestDate: Date;
+  }
