@@ -2,10 +2,15 @@ import { DELETE_TRANSACTION } from "@/lib/graphql/mutations/Transaction";
 import { GET_CATEGORIES } from "@/lib/graphql/queries/Category";
 import { DASHBOARD_DETAILS } from "@/lib/graphql/queries/Dashboard";
 import { TRANSACTIONS } from "@/lib/graphql/queries/Transaction";
-import type { Category, Transaction, TypeTransaction } from "@/types";
+import type {
+  Category,
+  Transaction,
+  Transactions,
+  TypeTransaction,
+} from "@/types";
 import { dateFormatterMonth } from "@/utils/DateFormatter";
 import { useMutation, useQuery } from "@apollo/client/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type TransactionFilter = {
   description?: string;
@@ -20,12 +25,9 @@ type SelectOption = {
 };
 
 export const useTransactionController = () => {
-  const [transactions, setTransactions] = useState<Transaction[] | null>(null);
   const [filteredTransactions, setFilteredTransactions] = useState<
     Transaction[] | null
   >(null);
-  const [categories, setCategories] = useState<Category[] | null>(null);
-  const [listMonths, setListMonths] = useState<SelectOption[]>([]);
   const [filter, setFilter] = useState<TransactionFilter>({
     description: "",
     type: "",
@@ -38,6 +40,36 @@ export const useTransactionController = () => {
     current: number;
     total: number;
   }>({ pages: 0, limit: 3, current: 0, total: 0 });
+
+  const { data } = useQuery<{
+    categories: Category[];
+    getTransactions: Transactions;
+    transactionPeriods: { oldestDate: Date; newestDate: Date };
+  }>(TRANSACTIONS);
+
+  const [deleteTransaction] = useMutation<
+    { deleteTransaction: boolean },
+    { deleteTransactionId: string }
+  >(DELETE_TRANSACTION, {
+    refetchQueries: [{ query: DASHBOARD_DETAILS }, { query: GET_CATEGORIES }],
+  });
+
+  const transactions = useMemo(
+    () => data?.getTransactions?.transactions ?? null,
+    [data?.getTransactions?.transactions]
+  );
+
+  const categories = useMemo(
+    () => data?.categories ?? null,
+    [data?.categories]
+  );
+
+  const listMonths = useMemo(() => {
+    if (!data?.transactionPeriods) return [];
+    const { oldestDate, newestDate } = data.transactionPeriods;
+
+    return listOfMonthsBetweenDates(new Date(oldestDate), new Date(newestDate));
+  }, [data?.transactionPeriods]);
 
   useEffect(() => {
     if (!transactions) return;
@@ -68,47 +100,14 @@ export const useTransactionController = () => {
       });
     }
 
-    setPagination((prev) => ({
-      ...prev,
-      total: result.length,
-      pages: Math.ceil(result.length / prev.limit),
-    }));
+    // setPagination((prev) => ({
+    //   ...prev,
+    //   total: result.length,
+    //   pages: Math.ceil(result.length / prev.limit),
+    // }));
 
     setFilteredTransactions(result);
   }, [filter, transactions]);
-
-  const { data } = useQuery<{
-    categories: Category[];
-    transactions: Transaction[];
-    transactionPeriods: { oldestDate: Date; newestDate: Date };
-  }>(TRANSACTIONS);
-
-  const [deleteTransaction] = useMutation<
-    { deleteTransaction: boolean },
-    { deleteTransactionId: string }
-  >(DELETE_TRANSACTION, {
-    refetchQueries: [{ query: DASHBOARD_DETAILS }, { query: GET_CATEGORIES }],
-  });
-
-  useEffect(() => {
-    if (data?.transactions) {
-      // setTransactions(data.transactions.slice(0, pagination.limit));
-      setTransactions(data.transactions);
-    }
-    if (data?.categories) {
-      setCategories(data.categories);
-    }
-    if (data?.transactionPeriods) {
-      setListMonths(
-        listOfMonthsBetweenDates(
-          new Date(data.transactionPeriods.oldestDate),
-          new Date(data.transactionPeriods.newestDate)
-        )
-      );
-    }
-  }, [data, pagination.limit]);
-
-  // useEffect(() => {}, [filter]);
 
   return {
     categories,

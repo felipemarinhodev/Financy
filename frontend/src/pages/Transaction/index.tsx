@@ -25,7 +25,6 @@ export const Transaction = () => {
     transactions,
     listMonths,
     deleteTransaction,
-    updateTransaction,
     setFilter,
   } = useTransactionController();
 

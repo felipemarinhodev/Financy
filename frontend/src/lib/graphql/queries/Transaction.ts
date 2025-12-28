@@ -2,20 +2,22 @@ import { gql } from "@apollo/client";
 
 export const TRANSACTIONS = gql`
   query getTransactionsDetails {
-    transactions {
-      id
-      description
-      amount
-      type
-      date
-      user {
+    getTransactions {
+      transactions {
         id
-      }
-      category {
-        id
-        title
-        color
-        icon
+        description
+        amount
+        type
+        date
+        user {
+          id
+        }
+        category {
+          id
+          title
+          color
+          icon
+        }
       }
     }
     categories {

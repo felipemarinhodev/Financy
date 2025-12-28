@@ -1,5 +1,10 @@
 import { DASHBOARD_DETAILS } from "@/lib/graphql/queries/Dashboard";
-import type { BalanceTransactions, Category, Transaction } from "@/types";
+import type {
+  BalanceTransactions,
+  Category,
+  Transaction,
+  Transactions,
+} from "@/types";
 import { useQuery } from "@apollo/client/react";
 import { useEffect, useState } from "react";
 
@@ -12,7 +17,7 @@ export const useDashboardController = () => {
 
   const { data, loading } = useQuery<{
     balanceTransactions: BalanceTransactions;
-    transactions: Transaction[];
+    getTransactions: Transactions;
     categories: Category[];
   }>(DASHBOARD_DETAILS);
 
@@ -21,8 +26,8 @@ export const useDashboardController = () => {
   }, [loading]);
 
   useEffect(() => {
-    if (data?.transactions) {
-      setTransactions(data.transactions);
+    if (data?.getTransactions && data.getTransactions.transactions) {
+      setTransactions(data.getTransactions.transactions);
     }
     if (data?.categories) {
       setCategories(data.categories);

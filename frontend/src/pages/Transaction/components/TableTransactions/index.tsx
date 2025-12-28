@@ -113,7 +113,14 @@ export const TableTransactions = ({
       </TableBody>
       <TableFooter className="bg-white h-14">
         <TableRow className="rounded-b-md shadow-md ">
-          <TableCell colSpan={6} className="text-right pr-6 font-semibold">
+          <TableCell colSpan={4} className="pl-6">
+            <div className="text-md font-normal text-gray-700">
+              <span className="font-medium">1</span> a{" "}
+              <span className="font-medium">10</span> |{" "}
+              <span className="font-medium">10</span> resultados
+            </div>
+          </TableCell>
+          <TableCell colSpan={2} className="w-fit text-right font-semibold">
             <Pagination>
               <PaginationContent>
                 <PaginationItem>

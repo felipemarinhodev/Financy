@@ -80,6 +80,15 @@ export type Transaction = {
   category?: Category;
 };
 
+export type Pagination = {
+  totalItems: number;
+};
+
+export type Transactions = {
+  transactions: Transaction[];
+  pagination: Pagination;
+};
+
 export interface BalanceTransactions {
   income: number;
   expense: number;
