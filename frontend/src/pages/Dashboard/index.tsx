@@ -42,12 +42,12 @@ export const Dashboard = () => {
           <span className="text-sm font-normal uppercase">
             Transações Recentes
           </span>
-          <Button
-            variant="link"
+          <Link
+            to="/transactions"
             className="text-green-base text-md font-medium px-0 has-[>svg]:px-0">
             Ver todas{" "}
             <ChevronRight className="inline-block w-5 h-5 text-green-base" />
-          </Button>
+          </Link>
         </div>
         {transactions.map((transaction) => (
           <TransactionItem key={transaction.id} transaction={transaction} />
