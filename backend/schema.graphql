@@ -111,7 +111,7 @@ type PaginationModel {
 type Query {
   balanceTransactions: BalanceDetailModel!
   categories: [CategoryModel!]!
-  getTransactions: TransactionsModel!
+  getTransactions(params: TransactionParamsInput): TransactionsModel!
   health: String!
   mostUsedCategories: MostUsedCategoryModel!
   transactionPeriods: TransactionPeriodsModel!
@@ -145,6 +145,15 @@ type TransactionModel {
   type: TransactionType!
   user: UserModel
   userId: String!
+}
+
+input TransactionParamsInput {
+  categoryId: String
+  description: String
+  limit: Float
+  page: Float
+  period: DateTimeISO
+  type: TransactionType
 }
 
 type TransactionPeriodsModel {

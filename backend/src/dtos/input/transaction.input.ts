@@ -28,3 +28,20 @@ export class UpdateTransactionInput {
   @Field(() => Date, { nullable: true })
   date?: Date;
 }
+
+@InputType()
+export class TransactionParamsInput {
+  @Field(() => Number, { nullable: true })
+  limit?: number;
+
+  @Field(() => Number, { nullable: true })
+  page?: number;
+  @Field(() => String, { nullable: true })
+  description?: string;
+  @Field(() => TransactionType, { nullable: true })
+  type?: TransactionType;
+  @Field(() => String, { nullable: true })
+  categoryId?: string;
+  @Field(() => Date, { nullable: true })
+  period?: Date;
+} 

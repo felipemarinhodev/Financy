@@ -1,5 +1,9 @@
 import { prismaClient } from "@/prisma/prisma";
-import { CreateTransactionInput, UpdateTransactionInput } from "../dtos/input";
+import {
+  CreateTransactionInput,
+  TransactionParamsInput,
+  UpdateTransactionInput,
+} from "../dtos/input";
 
 export class TransactionService {
   async create(
@@ -37,10 +41,27 @@ export class TransactionService {
     return true;
   }
 
-  async findAllByUserId(userId: string) {
+  async findAllByUserId(userId: string, params?: TransactionParamsInput) {
+    const { type, limit, page, description, categoryId, period } = params || {};
+    console.log("params", JSON.stringify(params, null, 2));
+
     const totalItems = await prismaClient.transaction.count({
       where: {
         userId,
+        type,
+        description: {
+          contains: description,
+        },
+        categoryId,
+        date: period
+          ? {
+              gte: new Date(period.getFullYear(), period.getMonth(), 1),
+              lt: new Date(period.getFullYear(), period.getMonth() + 1, 1),
+            }
+          : undefined,
+        //   gte: new Date(period?.getFullYear(), period?.getMonth(), 1),
+        //   lt: new Date(period?.getFullYear(), period?.getMonth() + 1, 1),
+        // },
       },
     });
 
@@ -50,11 +71,23 @@ export class TransactionService {
     const transactions = await prismaClient.transaction.findMany({
       where: {
         userId,
+        type,
+        description: {
+          contains: description,
+        },
+        categoryId,
+        date: period
+          ? {
+              gte: new Date(period.getFullYear(), period.getMonth(), 1),
+              lt: new Date(period.getFullYear(), period.getMonth() + 1, 1),
+            }
+          : undefined,
       },
       orderBy: {
         date: "desc",
       },
-      take: 10,
+      take: limit || 10,
+      skip: page && limit ? (page - 1) * limit : undefined,
     });
     return { transactions, pagination: { totalItems } };
   }
