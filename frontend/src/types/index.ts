@@ -94,3 +94,12 @@ export interface BalanceTransactions {
   expense: number;
   balance: number;
 }
+
+export type TransactionParamsInput = {
+  type?: TypeTransaction;
+  description?: string;
+  categoryId?: string;
+  period?: Date;
+  limit?: number;
+  page?: number;
+};

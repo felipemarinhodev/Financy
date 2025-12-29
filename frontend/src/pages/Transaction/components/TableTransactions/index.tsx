@@ -7,7 +7,6 @@ import {
   PaginationEllipsis,
   PaginationItem,
   PaginationLink,
-  PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import {
@@ -22,23 +21,23 @@ import {
 import type { Transaction } from "@/types";
 import { formatCurrency } from "@/utils/Currency";
 import { dateFormatter } from "@/utils/DateFormatter";
-import { SquarePen, Trash } from "lucide-react";
+import { ArrowRight, SquarePen, Trash } from "lucide-react";
 
 type TableProps = {
   deleteAction: (id: string) => void;
   editAction: (id: string) => void;
   transactions: Transaction[] | null;
-  pagination: {
-    pages: number;
-    limit: number;
-    current: number;
-  };
+  // pagination: {
+  //   pages: number;
+  //   limit: number;
+  //   currentPage: number;
+  // };
 };
 
 export const TableTransactions = ({
   deleteAction,
   editAction,
-  pagination,
+  // pagination,
   transactions,
 }: TableProps) => {
   return (
@@ -117,7 +116,7 @@ export const TableTransactions = ({
             <div className="text-md font-normal text-gray-700">
               <span className="font-medium">1</span> a{" "}
               <span className="font-medium">10</span> |{" "}
-              <span className="font-medium">10</span> resultados
+              <span className="font-medium">{0}</span> resultados {0} Páginas
             </div>
           </TableCell>
           <TableCell colSpan={2} className="w-fit text-right font-semibold">
@@ -141,7 +140,9 @@ export const TableTransactions = ({
                   <PaginationEllipsis />
                 </PaginationItem>
                 <PaginationItem>
-                  <PaginationNext href="#" />
+                  <Button variant="outline">
+                    <ArrowRight size={16} />
+                  </Button>
                 </PaginationItem>
               </PaginationContent>
             </Pagination>

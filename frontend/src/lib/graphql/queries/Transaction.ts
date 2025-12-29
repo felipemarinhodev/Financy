@@ -1,8 +1,11 @@
 import { gql } from "@apollo/client";
 
 export const TRANSACTIONS = gql`
-  query getTransactionsDetails {
-    getTransactions {
+  query getTransactionsDetails($params: TransactionParamsInput) {
+    getTransactions(params: $params) {
+      pagination {
+        totalItems
+      }
       transactions {
         id
         description

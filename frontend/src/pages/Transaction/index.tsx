@@ -19,14 +19,8 @@ export const Transaction = () => {
   const [selectedTransaction, setSelectedTransaction] =
     useState<TransactionType | null>(null);
 
-  const {
-    categories,
-    pagination,
-    transactions,
-    listMonths,
-    deleteTransaction,
-    setFilter,
-  } = useTransactionController();
+  const { categories, transactions, listMonths, deleteTransaction, setFilter } =
+    useTransactionController();
 
   return (
     <div className="flex flex-col gap-8">
@@ -107,12 +101,11 @@ export const Transaction = () => {
         editAction={(id: string) => {
           const selected = transactions?.find((t) => t.id === id) ?? null;
           if (!selected) return;
-          console.log("selected", selected);
           setSelectedTransaction(selected);
           setOpenDialog(true);
         }}
         transactions={transactions}
-        pagination={pagination}
+        // pagination={pagination}
       />
       <Alert
         isOpen={isOpenDeleteAlert}
