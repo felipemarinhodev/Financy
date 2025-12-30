@@ -43,8 +43,6 @@ export class TransactionService {
 
   async findAllByUserId(userId: string, params?: TransactionParamsInput) {
     const { type, limit, page, description, categoryId, period } = params || {};
-    console.log("params", JSON.stringify(params, null, 2));
-
     const totalItems = await prismaClient.transaction.count({
       where: {
         userId,
