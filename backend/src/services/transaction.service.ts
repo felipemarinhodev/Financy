@@ -59,9 +59,6 @@ export class TransactionService {
               lt: new Date(period.getFullYear(), period.getMonth() + 1, 1),
             }
           : undefined,
-        //   gte: new Date(period?.getFullYear(), period?.getMonth(), 1),
-        //   lt: new Date(period?.getFullYear(), period?.getMonth() + 1, 1),
-        // },
       },
     });
 
