@@ -4,8 +4,9 @@ import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
 import { CircleArrowDown, CircleArrowUp } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import z from "zod";
+import { Calendar } from "../Calendar";
 import { Select } from "../Select";
+import { TagCategory } from "../TagCategory";
 import { TextField } from "../TextField";
 import { Button } from "../ui/button";
 import {
@@ -15,29 +16,21 @@ import {
   DialogHeader,
 } from "../ui/dialog";
 import { useTransactionModalController } from "./useTransactionModalController";
-import { Calendar } from "../Calendar";
-import { TagCategory } from "../TagCategory";
 
 type NewTransactionProps = {
   open: boolean;
   categories: Category[];
   transaction?: Transaction | null;
   onOpenChange: (open: boolean) => void;
+  onTransactionSaved: () => void;
 };
-
-const transactionSchema = z.object({
-  amount: z.number().positive("O valor deve ser positivo"),
-  type: z.enum(["income", "expense"]),
-  categoryId: z.string().min(1, "A categoria é obrigatória"),
-  date: z.date().min(1, "A data é obrigatória"),
-  description: z.string(),
-});
 
 export const TransactionModal = ({
   categories,
   open,
   transaction = null,
   onOpenChange,
+  onTransactionSaved,
 }: NewTransactionProps) => {
   const [transactionType, setTransactionType] = useState<"income" | "expense">(
     transaction?.type || "expense"
@@ -55,8 +48,6 @@ export const TransactionModal = ({
 
   useEffect(() => {
     if (transaction) {
-      console.log("transaction: ", transaction.category?.id);
-
       setTransactionType(transaction.type);
       setDescription(transaction.description);
       setDate(transaction.date);
@@ -83,17 +74,6 @@ export const TransactionModal = ({
       description,
     };
 
-    const { data, error, success } =
-      transactionSchema.safeParse(transactionData);
-
-    console.log(
-      `success: ${success} | data: ${JSON.stringify(
-        data,
-        null,
-        2
-      )} | error: ${JSON.stringify(error, null, 2)}`
-    );
-
     const response = transaction
       ? await handleUpdateTransaction(transaction.id, transactionData)
       : await handleCreateTransaction(transactionData);
@@ -103,6 +83,7 @@ export const TransactionModal = ({
           ? "Transação atualizada com sucesso!"
           : "Transação criada com sucesso!"
       );
+      onTransactionSaved();
       onOpenChange(false);
       setTransactionType("expense");
       setDescription("");
@@ -129,18 +110,6 @@ export const TransactionModal = ({
         </DialogHeader>
 
         <div className="flex flex-col gap-4">
-          {/* <Alert variant="destructive">
-            <AlertCircleIcon />
-            <AlertTitle>Erro ao salvar a transação</AlertTitle>
-            <AlertDescription>
-              <p>Please verify your billing information and try again.</p>
-              <ul className="list-inside list-disc text-sm">
-                <li>Check your card details</li>
-                <li>Ensure sufficient funds</li>
-                <li>Verify billing address</li>
-              </ul>
-            </AlertDescription>
-          </Alert> */}
           <div className="grid grid-cols-2 w-full p-2 border border-gray-200 rounded-md">
             <Button
               size="lg"

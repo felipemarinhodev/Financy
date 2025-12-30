@@ -4,6 +4,7 @@ import {
 } from "@/lib/graphql/mutations/Transaction";
 import { GET_CATEGORIES } from "@/lib/graphql/queries/Category";
 import { DASHBOARD_DETAILS } from "@/lib/graphql/queries/Dashboard";
+import { TRANSACTIONS } from "@/lib/graphql/queries/Transaction";
 import type { Transaction, TypeTransaction } from "@/types";
 import { useMutation } from "@apollo/client/react";
 
@@ -36,7 +37,11 @@ export const useTransactionModalController = () => {
     TransactionModalMutationData,
     { data: TransactionModalInput }
   >(CREATE_TRANSACTION, {
-    refetchQueries: [{ query: DASHBOARD_DETAILS }, { query: GET_CATEGORIES }],
+    refetchQueries: [
+      { query: DASHBOARD_DETAILS },
+      { query: GET_CATEGORIES },
+      { query: TRANSACTIONS },
+    ],
   });
 
   type EditTransactionMutationInput = {
@@ -48,7 +53,11 @@ export const useTransactionModalController = () => {
     EditTransactionMutationData,
     EditTransactionMutationInput
   >(UPDATE_TRANSACTION, {
-    refetchQueries: [{ query: DASHBOARD_DETAILS }, { query: GET_CATEGORIES }],
+    refetchQueries: [
+      { query: DASHBOARD_DETAILS },
+      { query: GET_CATEGORIES },
+      { query: TRANSACTIONS },
+    ],
   });
 
   const handleCreateTransaction = async (input: TransactionModalInput) => {

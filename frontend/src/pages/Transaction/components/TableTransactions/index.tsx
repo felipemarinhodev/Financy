@@ -2,14 +2,6 @@ import { TagCategory, TagCategoryIcon } from "@/components/TagCategory";
 import { Type } from "@/components/Type";
 import { Button } from "@/components/ui/button";
 import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import {
   TableBody,
   TableCell,
   TableFooter,
@@ -21,24 +13,29 @@ import {
 import type { Transaction } from "@/types";
 import { formatCurrency } from "@/utils/Currency";
 import { dateFormatter } from "@/utils/DateFormatter";
-import { ArrowRight, SquarePen, Trash } from "lucide-react";
+import { SquarePen, Trash } from "lucide-react";
+import { PaginationDemo } from "./Pagination";
 
 type TableProps = {
   deleteAction: (id: string) => void;
   editAction: (id: string) => void;
   transactions: Transaction[] | null;
-  // pagination: {
-  //   pages: number;
-  //   limit: number;
-  //   currentPage: number;
-  // };
+  totalItems: number;
+  totalPages: number;
+  page: number;
+  setPage: (page: number) => void;
+  limit: number;
 };
 
 export const TableTransactions = ({
   deleteAction,
   editAction,
-  // pagination,
   transactions,
+  totalItems,
+  totalPages,
+  page,
+  setPage,
+  limit,
 }: TableProps) => {
   return (
     <UiTable className="bg-white rounded-md shadow-md">
@@ -114,38 +111,22 @@ export const TableTransactions = ({
         <TableRow className="rounded-b-md shadow-md ">
           <TableCell colSpan={4} className="pl-6">
             <div className="text-md font-normal text-gray-700">
-              <span className="font-medium">1</span> a{" "}
-              <span className="font-medium">10</span> |{" "}
-              <span className="font-medium">{0}</span> resultados {0} Páginas
+              <span className="font-medium">
+                {page === 1 ? 1 : (page - 1) * limit + 1}
+              </span>{" "}
+              a{" "}
+              <span className="font-medium">
+                {totalItems < page * limit ? totalItems : page * limit}
+              </span>{" "}
+              | <span className="font-medium">{totalItems}</span> resultados
             </div>
           </TableCell>
           <TableCell colSpan={2} className="w-fit text-right font-semibold">
-            <Pagination>
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious href="#" />
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#">1</PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#" isActive>
-                    2
-                  </PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#">3</PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationEllipsis />
-                </PaginationItem>
-                <PaginationItem>
-                  <Button variant="outline">
-                    <ArrowRight size={16} />
-                  </Button>
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
+            <PaginationDemo
+              currentPage={page}
+              totalPages={totalPages}
+              onPageChange={(newPage) => setPage(newPage)}
+            />
           </TableCell>
         </TableRow>
       </TableFooter>

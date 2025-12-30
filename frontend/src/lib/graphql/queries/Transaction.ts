@@ -1,7 +1,32 @@
 import { gql } from "@apollo/client";
 
+export const TRANSACTIONS_DETAILS = gql`
+  query getTransactionsDetails {
+    categories {
+      id
+      title
+      color
+      description
+      icon
+      user {
+        id
+        name
+      }
+      detail {
+        categoryId
+        totalAmount
+        transactionCount
+      }
+    }
+    transactionPeriods {
+      oldestDate
+      newestDate
+    }
+  }
+`;
+
 export const TRANSACTIONS = gql`
-  query getTransactionsDetails($params: TransactionParamsInput) {
+  query getTransactions($params: TransactionParamsInput) {
     getTransactions(params: $params) {
       pagination {
         totalItems
@@ -22,26 +47,6 @@ export const TRANSACTIONS = gql`
           icon
         }
       }
-    }
-    categories {
-      id
-      title
-      color
-      description
-      icon
-      user {
-        id
-        name
-      }
-      detail {
-        categoryId
-        totalAmount
-        transactionCount
-      }
-    }
-    transactionPeriods {
-      oldestDate
-      newestDate
     }
   }
 `;

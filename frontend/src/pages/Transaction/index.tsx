@@ -19,8 +19,19 @@ export const Transaction = () => {
   const [selectedTransaction, setSelectedTransaction] =
     useState<TransactionType | null>(null);
 
-  const { categories, transactions, listMonths, deleteTransaction, setFilter } =
-    useTransactionController();
+  const {
+    categories,
+    transactions,
+    listMonths,
+    deleteTransaction,
+    setFilter,
+    totalItems,
+    totalPages,
+    page,
+    setPage,
+    refetchTransactions,
+    limit,
+  } = useTransactionController();
 
   return (
     <div className="flex flex-col gap-8">
@@ -105,7 +116,11 @@ export const Transaction = () => {
           setOpenDialog(true);
         }}
         transactions={transactions}
-        // pagination={pagination}
+        totalItems={totalItems}
+        totalPages={totalPages}
+        page={page}
+        setPage={setPage}
+        limit={limit}
       />
       <Alert
         isOpen={isOpenDeleteAlert}
@@ -124,6 +139,7 @@ export const Transaction = () => {
         open={openDialog}
         onOpenChange={setOpenDialog}
         transaction={selectedTransaction ?? undefined}
+        onTransactionSaved={() => refetchTransactions() }
       />
     </div>
   );

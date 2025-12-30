@@ -1,23 +1,30 @@
 import { DELETE_TRANSACTION } from "@/lib/graphql/mutations/Transaction";
 import { GET_CATEGORIES } from "@/lib/graphql/queries/Category";
 import { DASHBOARD_DETAILS } from "@/lib/graphql/queries/Dashboard";
-import { TRANSACTIONS } from "@/lib/graphql/queries/Transaction";
+import {
+  TRANSACTIONS,
+  TRANSACTIONS_DETAILS,
+} from "@/lib/graphql/queries/Transaction";
 import type { Category, Transactions, TypeTransaction } from "@/types";
 import { dateFormatterMonth } from "@/utils/DateFormatter";
-import { useLazyQuery, useMutation } from "@apollo/client/react";
-import { useEffect, useMemo, useState } from "react";
+import { useMutation, useQuery } from "@apollo/client/react";
+import { useMemo, useState } from "react";
 
 type TransactionFilter = {
   description?: string;
   type?: TypeTransaction | "";
   categoryId?: string;
   period: Date | null;
+  page?: number;
+  limit?: number;
 };
 
 type SelectOption = {
   label: string;
   value: string;
 };
+
+const ITEMS_PER_PAGE = 10;
 
 export const useTransactionController = () => {
   const [filter, setFilter] = useState<TransactionFilter>({
@@ -26,63 +33,83 @@ export const useTransactionController = () => {
     categoryId: "",
     period: null,
   });
-  // const [paginationState, setPaginationState] = useState<{
-  //   limit: number;
-  //   currentPage: number;
-  // }>({ limit: 10, currentPage: 1 });
+  const [page, setPage] = useState(1);
 
-  const [getTransactionDetail, { data }] = useLazyQuery<
+  const { data, refetch } = useQuery<
     {
-      categories: Category[];
       getTransactions: Transactions;
-      transactionPeriods: { oldestDate: Date; newestDate: Date };
     },
     { params?: TransactionFilter }
-  >(TRANSACTIONS);
-
-  useEffect(() => {
-    getTransactionDetail({
-      variables: {
-        params: {
-          description: filter.description,
-          type: filter.type === "" ? undefined : filter.type,
-          categoryId: filter.categoryId === "" ? undefined : filter.categoryId,
-          period: filter.period,
-        },
+  >(TRANSACTIONS, {
+    variables: {
+      params: {
+        description: filter.description,
+        type: filter.type === "" ? undefined : filter.type,
+        categoryId: filter.categoryId === "" ? undefined : filter.categoryId,
+        period: filter.period,
+        page,
+        limit: ITEMS_PER_PAGE,
       },
-    });
-  }, [filter]);
+    },
+    fetchPolicy: "network-only",
+  });
+
+  const { data: transactionDetails } = useQuery<{
+    categories: Category[];
+    transactionPeriods: { oldestDate: Date; newestDate: Date };
+  }>(TRANSACTIONS_DETAILS);
 
   const [deleteTransaction] = useMutation<
     { deleteTransaction: boolean },
     { deleteTransactionId: string }
   >(DELETE_TRANSACTION, {
-    refetchQueries: [{ query: DASHBOARD_DETAILS }, { query: GET_CATEGORIES }],
+    refetchQueries: [
+      { query: DASHBOARD_DETAILS },
+      { query: GET_CATEGORIES },
+      { query: TRANSACTIONS },
+    ],
+    onCompleted: () => {
+      refetch();
+    },
   });
+  const transactions = useMemo(() => {
+    const transactions = data?.getTransactions.transactions || [];
+    return transactions || [];
+  }, [data?.getTransactions.transactions]);
 
-  const transactions = useMemo(
-    () => data?.getTransactions?.transactions ?? null,
-    [data?.getTransactions?.transactions]
+  const totalItems = useMemo(
+    () => data?.getTransactions?.pagination.totalItems ?? 0,
+    [data?.getTransactions?.pagination.totalItems]
+  );
+
+  const totalPages = useMemo(
+    () => Math.ceil(totalItems / ITEMS_PER_PAGE),
+    [totalItems]
   );
 
   const categories = useMemo(
-    () => data?.categories ?? null,
-    [data?.categories]
+    () => transactionDetails?.categories ?? null,
+    [transactionDetails?.categories]
   );
 
   const listMonths = useMemo(() => {
-    if (!data?.transactionPeriods) return [];
-    const { oldestDate, newestDate } = data.transactionPeriods;
-
+    if (!transactionDetails?.transactionPeriods) return [];
+    const { oldestDate, newestDate } = transactionDetails.transactionPeriods;
     return listOfMonthsBetweenDates(new Date(oldestDate), new Date(newestDate));
-  }, [data?.transactionPeriods]);
+  }, [transactionDetails]);
 
   return {
     categories,
     transactions,
     listMonths,
+    limit: ITEMS_PER_PAGE,
+    page,
+    setPage,
+    totalItems,
+    totalPages,
     deleteTransaction,
     setFilter,
+    refetchTransactions: refetch,
   };
 };
 
@@ -99,6 +126,5 @@ function listOfMonthsBetweenDates(
     months.push({ label: `${month} / ${year}`, value: date.toISOString() });
     date.setMonth(date.getMonth() + 1);
   }
-
   return months;
 }
