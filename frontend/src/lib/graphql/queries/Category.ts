@@ -18,14 +18,16 @@ export const GET_CATEGORIES = gql`
         transactionCount
       }
     }
-    transactions {
-      id
-      description
-      amount
-      type
-      date
-      user {
+    getTransactions {
+      transactions {
         id
+        description
+        amount
+        type
+        date
+        user {
+          id
+        }
       }
     }
     mostUsedCategories {

@@ -160,9 +160,16 @@ export const TransactionModal = ({
               label="Valor"
               name="amount"
               placeholder="0,00"
-              type="number"
-              value={amount}
-              onChange={(e) => setAmount(Number(e.target.value))}
+              type="text"
+              value={amount.toLocaleString("pt-BR", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+              onChange={(e) => {
+                const value = e.target.value.replace(/\D/g, "");
+                const numericValue = Number(value) / 100;
+                setAmount(numericValue);
+              }}
             />
           </div>
           <div>
