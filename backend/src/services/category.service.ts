@@ -29,6 +29,17 @@ export class CategoryService {
   }
 
   async delete(id: string, userId: string) {
+    const existTransactionsAssociated = await prismaClient.transaction.count({
+      where: {
+        categoryId: id,
+        userId,
+      },
+    });
+
+    if (existTransactionsAssociated > 0) {
+      throw new Error("Não é possível deletar categoria com transações associadas");
+    }
+
     const categoryExist = await prismaClient.category.findUnique({
       where: {
         id,
