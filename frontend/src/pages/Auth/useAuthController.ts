@@ -20,12 +20,14 @@ export const useAuthController = () => {
 
         if (isAuthenticated) {
           // await setCategories();
-          toast.success(`Login successful! Welcome back. ${login.name}`);
+          toast.success(
+            `Login realizado com sucesso! Bem-vindo(a), ${login.name}`
+          );
           navigate("/dashboard");
         }
       } catch (error) {
         setIsLoading(false);
-        toast.error("Login failed! Please check your credentials.");
+        toast.error("Falha no login! Verifique suas credenciais.");
         throw error;
       } finally {
         setIsLoading(false);
@@ -51,12 +53,12 @@ export const useAuthController = () => {
         }) as unknown as RegisterInput;
         const isCreated = await signup(newUser);
         if (isCreated) {
-          toast.success(`Account created successfully! Welcome, ${name}.`);
+          toast.success(`Conta criada com sucesso! Bem-vindo(a), ${name}.`);
           navigate("/dashboard");
         }
       } catch (error) {
         setIsLoading(false);
-        toast.error("Login failed! Please check your credentials.");
+        toast.error("Falha ao criar conta! Verifique suas credenciais.");
         throw error;
       } finally {
         setIsLoading(false);

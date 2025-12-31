@@ -62,7 +62,7 @@ export const useCategoryController = () => {
         variables: { deleteCategoryId: categoryId },
       });
       if (data?.deleteCategory) {
-        toast.success("Category deleted successfully!");
+        toast.success("Categoria excluída com sucesso!");
       }
     } catch (error) {
       console.log(JSON.stringify(error));
@@ -74,7 +74,7 @@ export const useCategoryController = () => {
         "Unknown error";
 
       toast.error(
-        errorMessage || "Failed to delete category! Please try again."
+        errorMessage || "Falha ao excluir categoria! Tente novamente."
       );
       console.error("Error deleting category:", error);
     } finally {

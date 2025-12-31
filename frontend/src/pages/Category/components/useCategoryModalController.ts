@@ -58,7 +58,7 @@ export const useCategoryModalController = () => {
       return false;
     } catch (error) {
       setIsLoading(false);
-      toast.error("Failed to create category! Please try again.");
+      toast.error("Falha ao criar categoria! Tente novamente.");
       throw error;
     } finally {
       setIsLoading(false);
@@ -101,12 +101,11 @@ export const useCategoryModalController = () => {
       return false;
     } catch (error) {
       setIsLoading(false);
-      toast.error("Failed to update category! Please try again.");
+      toast.error("Falha ao atualizar categoria! Tente novamente.");
       throw error;
     } finally {
       setIsLoading(false);
     }
-    // Implementation for editing a category will go here
   };
 
   return { isLoading, handleCreateCategory, handleEditCategory };

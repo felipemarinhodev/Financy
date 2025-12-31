@@ -83,12 +83,12 @@ export const CategoryModal = ({
       success = await handleEditCategory(category!.id, input);
 
       if (success) {
-        toast.success("Category updated successfully!");
+        toast.success("Categoria atualizada com sucesso!");
       }
     } else {
       success = await handleCreateCategory(input);
       if (success) {
-        toast.success("Category created successfully!");
+        toast.success("Categoria criada com sucesso!");
       }
     }
     if (success) {
