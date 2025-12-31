@@ -65,7 +65,17 @@ export const useCategoryController = () => {
         toast.success("Category deleted successfully!");
       }
     } catch (error) {
-      toast.error("Failed to delete category! Please try again.");
+      console.log(JSON.stringify(error));
+
+      const errorMessage =
+        (error as any)?.graphQLErrors?.[0]?.message ||
+        (error as any)?.networkError?.message ||
+        (error as any)?.message ||
+        "Unknown error";
+
+      toast.error(
+        errorMessage || "Failed to delete category! Please try again."
+      );
       console.error("Error deleting category:", error);
     } finally {
       setLoading(false);
